@@ -13,10 +13,14 @@ const CreateCategory = () => {
 
 
     useEffect(() => {
-        api.get('/category/all').then(response => {
-            setCategorias(response.data);
-        })
+       getListCategori()
     }, []);
+
+function getListCategori(){
+    api.get('/category/all').then(response => {
+        setCategorias(response.data);
+    })
+}
 
 
     const [formData, setFormData] = useState({
@@ -37,8 +41,13 @@ const CreateCategory = () => {
 
         await api.post('/category', JSON.stringify({ 'name': name }))
 
-        alert('suceso');
+        getListCategori()
 
+    }
+
+    async function handleDelet(id: number) {
+        await api.delete(`/category/${id}`)
+        getListCategori()
     }
 
 
@@ -48,7 +57,7 @@ const CreateCategory = () => {
                 <h1>Cateogry</h1>
                 <div>
                     <ul>
-                        {categorias.map(categoria => (<li key={categoria.id}>{categoria.name}</li>))}
+                        {categorias.map(categoria => (<li key={categoria.id}>{categoria.name} <button onClick={(e) => handleDelet(categoria.id)}>X</button></li>))}
                     </ul>
                 </div>
                 <form onSubmit={handleSubmit}>
