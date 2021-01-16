@@ -1,31 +1,57 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios'
-
+import React, { ChangeEvent, FormEvent, useState } from 'react';
+import api from '../services/api';
 
 interface CategoryResponse {
-    id: Number;
+    id: number;
     name: string;
 }
 
 
 const CreateCategory = () => {
-    const [items, setItems] = useState<CategoryResponse[]>([])
 
-    useEffect(() => {
-        axios.get<CategoryResponse[]>('http://localhost:8080/category/all').then(response => {
-            console.log(response.data);
+    const [formData, setFormData] = useState({
+        name: '',
+    });
 
-            setItems(response.data);
+    function handelInputChange(event: ChangeEvent<HTMLInputElement>) {
+        const { name, value } = event.target
+        setFormData({
+            ...formData, [name]: value
         })
-    }, []);
+    }
+
+
+    async function handleSubmit(event: FormEvent) {
+        event.preventDefault();
+
+        const { name } = formData;
+
+        await api.post('/category', JSON.stringify({'name': name}))
+
+        alert('suceso');
+
+    }
+
 
     return (
         <>
-            <h1>Create Category</h1>
             <div>
-                <ul>
-                    {items.map(test => <li>{test.name}</li>)}
-                </ul>
+                <h1>Cateogry</h1>
+                <form onSubmit={handleSubmit}>
+                    <h1>Cadastro do <br></br> Categoria</h1>
+                    <div className="field">
+                        <label htmlFor="name">
+                            Categoria
+                        </label>
+                        <input
+                            type="text"
+                            name="name"
+                            id="name"
+                            onChange={handelInputChange}
+                        />
+                    </div>
+                    <button type="submit">Cadastrar Catgoria</button>
+                </form>
             </div>
         </>
     )
