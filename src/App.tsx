@@ -1,5 +1,6 @@
 import { AppBar, Container, Grid, Toolbar } from '@material-ui/core';
 import React from 'react';
+import CreateBill from './createBill';
 import CreateCategory from './createCategory';
 
 function App() {
@@ -16,8 +17,11 @@ function App() {
           <div />
           <Container  >
             <Grid >
-              <CreateCategory />
+              <CreateBill />
             </Grid>
+            {/* <Grid >
+              <CreateCategory />
+            </Grid> */}
           </Container>
         </main>
       </div>
