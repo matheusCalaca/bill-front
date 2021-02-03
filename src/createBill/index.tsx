@@ -1,15 +1,13 @@
-import { ColDef, DataGrid } from '@material-ui/data-grid';
-import React, { useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
+import { TableFooter, TablePagination } from '@material-ui/core';
+import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import api from '../services/api';
-import { TableFooter, TablePagination } from '@material-ui/core';
 
 
 interface ConfTableResponse {
@@ -30,30 +28,50 @@ interface BillResponse {
     price: number,
     status: string
 }
-var arrayTest: BillResponse[] = [];
+
+
+interface CategoryResponse {
+    id: number;
+    name: string;
+}
+
 
 const CreateBill = () => {
 
-    const [bills, setBills] = useState<BillResponse[]>([])
+    const [bills, setBills] = useState<BillResponse[]>([]);
+    const [categorias, setCategorias] = useState<CategoryResponse[]>([])
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [rowsCount, setRowsCount] = useState<ConfTableResponse>();
 
     useEffect(() => {
-        getListCategori(page, rowsPerPage)
+        getListBills(page, rowsPerPage)
 
-         // preload
-         const pagePreload = (0 + 1) * rowsPerPage;
-         getListCategori(pagePreload, rowsPerPage)
+        // preload
+        const pagePreload = (0 + 1) * rowsPerPage;
+        getListBills(pagePreload, rowsPerPage)
     }, []);
 
-    async function getListCategori(page: number, size: number) {
+
+
+    useEffect(() => {
+        getListCategoras()
+    }, []);
+
+    function getListCategoras() {
+        api.get('/category/all').then(response => {
+            setCategorias(response.data);
+        })
+    }
+
+
+    async function getListBills(page: number, size: number) {
         let url = `/bill?page=${page}&size=${size}`
         await api.get(url).then(response => {
 
-            if (bills.length == 0 || bills.length === ( page ) || bills.length === ( page + size )) {
+            if (bills.length == 0 || bills.length === (page) || bills.length === (page + size)) {
                 let data: BillResponse[] = response.data;
-                data.forEach(function (bill) { bills.push(bill)})
+                data.forEach(function (bill) { bills.push(bill) })
                 console.log(bills);
 
             }
@@ -106,10 +124,58 @@ const CreateBill = () => {
     const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
         // preload
         const pagePreload = (newPage + 1) * rowsPerPage;
-        getListCategori(pagePreload, rowsPerPage)
+        getListBills(pagePreload, rowsPerPage)
         setPage(newPage);
     };
 
+    const [selectedCategory, setSelectedCategory] = useState('0');
+
+    const [formData, setFormData] = useState({
+        description: '',
+        maturityDate: '',
+        price: '',
+    });
+
+    function handelInputChange(event: ChangeEvent<HTMLInputElement>) {
+        const { name, value } = event.target
+        setFormData({
+            ...formData, [name]: value
+        })
+    }
+
+    async function handleSubmit(event: FormEvent) {
+        event.preventDefault();
+
+
+        const { description, maturityDate, price } = formData;
+        const categoriId: number = Number(selectedCategory)
+        const categori: CategoryResponse = {id: categoriId, name: 'teste'};
+
+        const data = new FormData();
+
+        data.append('description', description);
+        data.append('maturityDate', maturityDate);
+        data.append('price', price);
+        data.append('category', JSON.stringify(categori));
+        data.append('status', 'OPEN');
+
+
+        var object: any = {};
+        data.forEach((value, key) => object[key] = value);
+        var json = JSON.stringify(object);
+        console.log(json);
+
+
+        // await api.post('/category', JSON.stringify({ 'name': name }))
+
+        // getListCategori()
+
+    }
+
+    function handelSelectUf(event: ChangeEvent<HTMLSelectElement>) {
+        const category = event.target.value;
+        setSelectedCategory(category);
+    }
 
 
     return (
@@ -157,7 +223,7 @@ const CreateBill = () => {
                             <TableFooter>
                                 <TableRow>
                                     <TablePagination
-                                        rowsPerPageOptions={[ 10]}
+                                        rowsPerPageOptions={[10]}
                                         colSpan={3}
                                         count={sizeQt}
                                         rowsPerPage={rowsPerPage}
@@ -167,7 +233,7 @@ const CreateBill = () => {
                                             native: true,
                                         }}
                                         onChangePage={handleChangePage}
-                                        // onChangeRowsPerPage={handleChangeRowsPerPage}
+                                    // onChangeRowsPerPage={handleChangeRowsPerPage}
                                     // ActionsComponent={TablePaginationActions}
                                     />
                                 </TableRow>
@@ -175,21 +241,86 @@ const CreateBill = () => {
                         </Table>
                     </TableContainer>
                 </div>
-                {/* <form onSubmit={handleSubmit}>
-                    <h1>Cadastro do <br></br> Categoria</h1>
-                    <div className="field">
-                        <label htmlFor="name">
-                            Categoria
-                        </label>
-                        <input
-                            type="text"
-                            name="name"
-                            id="name"
-                            onChange={handelInputChange}
-                        />
-                    </div>
-                    <button type="submit">Cadastrar Catgoria</button>
-                </form> */}
+                <div>
+                    <form onSubmit={handleSubmit}>
+                        <h1>Cadastro de Conta </h1>
+                        <div className="field">
+                            <label htmlFor="description">
+                                Descrição
+                                </label>
+                            <input
+                                type="text"
+                                name="description"
+                                id="description"
+                                onChange={handelInputChange}
+                            />
+                        </div>
+
+
+                        <div className="field">
+                            <label htmlFor="price">
+                                Preço
+                                </label>
+                            <input
+                                type="number"
+                                name="price"
+                                id="price"
+                                onChange={handelInputChange}
+                            />
+                        </div>
+
+
+                        <div className="field">
+                            <label htmlFor="maturityDate">
+                                Data
+                                </label>
+                            <input
+                                type="date"
+                                name="maturityDate"
+                                id="maturityDate"
+                                onChange={handelInputChange}
+                            />
+                        </div>
+
+
+
+                        <div className="field">
+                            <label htmlFor="category">
+                                Categoria
+                            </label>
+                            <select
+                                name="category"
+                                id="category"
+                                value={selectedCategory}
+                                onChange={handelSelectUf}
+                            >
+                                <option value="0">Selecione uma Categoria</option>
+                                {
+                                    categorias.map(categoria => (
+                                        <option key={categoria.id} value={categoria.id}> {categoria.name}</option>
+                                    ))
+                                }
+                            </select>
+                        </div>
+
+
+
+
+                        <div className="field">
+                            <label htmlFor="name">
+                                owner
+                                </label>
+                            {/* <input
+                                type="text"
+                                name="description"
+                                id="description"
+                                onChange={handelInputChange}
+                            /> */}
+                        </div>
+
+                        <button type="submit">Cadastrar</button>
+                    </form>
+                </div>
             </div>
         </>
     )
