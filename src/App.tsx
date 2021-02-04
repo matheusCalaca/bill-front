@@ -2,12 +2,13 @@ import { AppBar, Container, Grid, Toolbar } from '@material-ui/core';
 import React from 'react';
 import CreateBill from './createBill';
 import CreateCategory from './createCategory';
+import LoginPage from './loginPage';
 
 function App() {
   return (
     <>
       <div>
-{/* 
+        {/* 
         <AppBar >
           <Toolbar >
           </Toolbar>
@@ -16,12 +17,16 @@ function App() {
         <main >
           <div />
           <Container  >
+            <Grid>
+              <LoginPage />
+            </Grid>
             <Grid >
               <CreateBill />
             </Grid>
-            {/* <Grid >
+            <hr />
+            <Grid >
               <CreateCategory />
-            </Grid> */}
+            </Grid>
           </Container>
         </main>
       </div>
