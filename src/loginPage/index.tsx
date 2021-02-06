@@ -1,6 +1,12 @@
 import React, { ChangeEvent, FormEvent, useState } from 'react';
 import api from '../services/apiUser';
 
+interface LoginResponse {
+    
+    token: string;
+}
+
+
 const LoginPage = () => {
 
     const [formData, setFormData] = useState({
@@ -20,8 +26,8 @@ const LoginPage = () => {
 
         const { email, password } = formData;
 
-        await api.post('/user/login', JSON.stringify({ 'email': email, 'password': password })).then(response => {
-            console.log(response.data);
+        await api.post<LoginResponse>('/user/login', JSON.stringify({ 'email': email, 'password': password })).then(response => {
+           localStorage.setItem('token', response.data.token);
         })
 
 
