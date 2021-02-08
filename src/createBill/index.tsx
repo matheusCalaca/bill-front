@@ -109,16 +109,23 @@ const CreateBill = () => {
     // }
 
     useEffect(() => {
+        getConfsTable()
+    }, []);
+
+    let sizeQt = rowsCount?.size == null ? 0 : rowsCount?.size;
+
+    let emptyRows = rowsPerPage - Math.min(rowsPerPage, sizeQt - page * rowsPerPage);
+
+
+    function getConfsTable() {
         let url = `/bill/confTable`
         api.get(url).then(response => {
             setRowsCount(response.data);
-        })
-    }, []);
+        });
 
-    let sizeQt = rowsCount?.size == null ? 0 : rowsCount?.size
-
-    const emptyRows = rowsPerPage - Math.min(rowsPerPage, sizeQt - page * rowsPerPage);
-
+        sizeQt = rowsCount?.size == null ? 0 : rowsCount?.size;
+        emptyRows = rowsPerPage - Math.min(rowsPerPage, sizeQt - page * rowsPerPage);
+    }
 
 
     const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
@@ -148,25 +155,28 @@ const CreateBill = () => {
 
 
         const { description, maturityDate, price } = formData;
-        const categoriId: number = Number(selectedCategory)
-        const categori: CategoryResponse = {id: categoriId, name: 'teste'};
 
         const data = new FormData();
 
         data.append('description', description);
         data.append('maturityDate', maturityDate);
         data.append('price', price);
-        data.append('category', JSON.stringify(categori));
-        data.append('status', 'OPEN');
+        data.append('categoryId', selectedCategory);
 
 
         var object: any = {};
         data.forEach((value, key) => object[key] = value);
         var json = JSON.stringify(object);
         console.log(json);
+        console.log(localStorage.getItem('token'));
 
 
-        // await api.post('/category', JSON.stringify({ 'name': name }))
+        await api.post('/bill', json)
+            .then(response => {
+                alert("sucesso");
+                getConfsTable();
+            })
+
 
         // getListCategori()
 
@@ -301,21 +311,6 @@ const CreateBill = () => {
                                     ))
                                 }
                             </select>
-                        </div>
-
-
-
-
-                        <div className="field">
-                            <label htmlFor="name">
-                                owner
-                                </label>
-                            {/* <input
-                                type="text"
-                                name="description"
-                                id="description"
-                                onChange={handelInputChange}
-                            /> */}
                         </div>
 
                         <button type="submit">Cadastrar</button>
