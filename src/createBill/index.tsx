@@ -81,33 +81,6 @@ const CreateBill = () => {
     }
 
 
-    // const [formData, setFormData] = useState({
-    //     name: '',
-    // });
-    // function handelInputChange(event: ChangeEvent<HTMLInputElement>) {
-    //     const { name, value } = event.target
-    //     setFormData({
-    //         ...formData, [name]: value
-    //     })
-    // }
-
-
-    // async function handleSubmit(event: FormEvent) {
-    //     event.preventDefault();
-
-    //     const { name } = formData;
-
-    //     await api.post('/category', JSON.stringify({ 'name': name }))
-
-    //     getListCategori()
-
-    // }
-
-    // async function handleDelet(id: number) {
-    //     await api.delete(`/category/${id}`)
-    //     getListCategori()
-    // }
-
     useEffect(() => {
         getConfsTable()
     }, []);
@@ -178,13 +151,17 @@ const CreateBill = () => {
             })
 
 
-        // getListCategori()
-
     }
 
     function handelSelectUf(event: ChangeEvent<HTMLSelectElement>) {
         const category = event.target.value;
         setSelectedCategory(category);
+    }
+
+    async function deleteBill(id: number) {
+        await api.delete(`/bill/${id}`).then(() => {
+            getConfsTable();
+        });
     }
 
 
@@ -222,6 +199,7 @@ const CreateBill = () => {
                                         <TableCell align="right">{bill.description}</TableCell>
                                         <TableCell align="right">{bill.category.name}</TableCell>
                                         <TableCell align="right">{bill.status}</TableCell>
+                                        <TableCell align="right"><button onClick={() => deleteBill(bill.id)} >X</button></TableCell>
                                     </TableRow>
                                 ))}
                                 {emptyRows > 0 && (
