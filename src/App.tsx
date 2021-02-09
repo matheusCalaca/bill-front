@@ -2,6 +2,7 @@ import { AppBar, Container, Grid, Toolbar } from '@material-ui/core';
 import React from 'react';
 import CreateBill from './createBill';
 import CreateCategory from './createCategory';
+import CreatePaymentMethod from './createInstituition';
 import LoginPage from './loginPage';
 
 function App() {
@@ -26,6 +27,10 @@ function App() {
             <hr />
             <Grid >
               <CreateCategory />
+            </Grid>
+            <hr />
+            <Grid >
+              <CreatePaymentMethod />
             </Grid>
           </Container>
         </main>
