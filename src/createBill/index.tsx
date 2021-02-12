@@ -6,8 +6,10 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import Button from '@material-ui/core/Button';
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import api from '../services/api';
+import SimpleDialog from '../createPayment';
 
 
 interface ConfTableResponse {
@@ -140,8 +142,6 @@ const CreateBill = () => {
         var object: any = {};
         data.forEach((value, key) => object[key] = value);
         var json = JSON.stringify(object);
-        console.log(json);
-        console.log(localStorage.getItem('token'));
 
 
         await api.post('/bill', json)
@@ -153,7 +153,7 @@ const CreateBill = () => {
 
     }
 
-    function handelSelectUf(event: ChangeEvent<HTMLSelectElement>) {
+    function handelSelectCategory(event: ChangeEvent<HTMLSelectElement>) {
         const category = event.target.value;
         setSelectedCategory(category);
     }
@@ -163,6 +163,23 @@ const CreateBill = () => {
             getConfsTable();
         });
     }
+
+
+    //dialog
+
+    const [open, setOpen] = React.useState(false);
+    const [billID, setBillID] = React.useState(0);
+
+
+    const handleClickOpen = (value: number) => {
+        setBillID(value);
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
 
 
     return (
@@ -200,6 +217,11 @@ const CreateBill = () => {
                                         <TableCell align="right">{bill.category.name}</TableCell>
                                         <TableCell align="right">{bill.status}</TableCell>
                                         <TableCell align="right"><button onClick={() => deleteBill(bill.id)} >X</button></TableCell>
+                                        <TableCell align="right">
+                                            <Button variant="outlined" color="primary" onClick={() => handleClickOpen(bill.id)}>
+                                                cadastrar payment
+                                            </Button>
+                                        </TableCell>
                                     </TableRow>
                                 ))}
                                 {emptyRows > 0 && (
@@ -280,7 +302,7 @@ const CreateBill = () => {
                                 name="category"
                                 id="category"
                                 value={selectedCategory}
-                                onChange={handelSelectUf}
+                                onChange={handelSelectCategory}
                             >
                                 <option value="0">Selecione uma Categoria</option>
                                 {
@@ -294,6 +316,7 @@ const CreateBill = () => {
                         <button type="submit">Cadastrar</button>
                     </form>
                 </div>
+                <SimpleDialog selectedId={billID} open={open} onClose={handleClose} />
             </div>
         </>
     )
