@@ -86,11 +86,9 @@ export default function SimpleDialog(props: SimpleDialogProps) {
         var json = JSON.stringify(object);
         console.log(json);
 
-
-        // await api.post('/category', JSON.stringify({ 'name': name }))
         await api.post('/payment', json)
         .then(response => {
-            alert("sucesso");
+            handleClose();
         });
 
     }
