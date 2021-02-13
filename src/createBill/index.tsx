@@ -70,9 +70,9 @@ const CreateBill = () => {
     async function getListBills(page: number, size: number) {
         let url = `/bill?page=${page}&size=${size}`
         await api.get(url).then(response => {
-
+            let billResponse = response.data;
             if (bills.length == 0 || bills.length === (page) || bills.length === (page + size)) {
-                let data: BillResponse[] = response.data;
+                let data: BillResponse[] = billResponse;
                 data.forEach(function (bill) { bills.push(bill) })
                 console.log(bills);
 
@@ -218,7 +218,7 @@ const CreateBill = () => {
                                         <TableCell align="right">{bill.status}</TableCell>
                                         <TableCell align="right"><button onClick={() => deleteBill(bill.id)} >X</button></TableCell>
                                         <TableCell align="right">
-                                            <Button variant="outlined" color="primary" onClick={() => handleClickOpen(bill.id)}>
+                                            <Button variant="outlined" color="primary" onClick={() => handleClickOpen(bill.id)} disabled={bill.status == 'PAYMENT'}>
                                                 cadastrar payment
                                             </Button>
                                         </TableCell>
