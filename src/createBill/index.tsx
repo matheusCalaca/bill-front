@@ -161,6 +161,9 @@ const CreateBill = () => {
     async function deleteBill(id: number) {
         await api.delete(`/bill/${id}`).then(() => {
             getConfsTable();
+        }).catch(err => {
+            console.log(err);
+
         });
     }
 

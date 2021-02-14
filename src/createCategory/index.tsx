@@ -1,4 +1,6 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
 import api from '../services/api';
 
 interface CategoryResponse {
@@ -9,18 +11,18 @@ interface CategoryResponse {
 
 const CreateCategory = () => {
 
+
     const [categorias, setCategorias] = useState<CategoryResponse[]>([])
 
-
     useEffect(() => {
-       getListCategori()
+        getListCategori()
     }, []);
 
-function getListCategori(){
-    api.get('/category/all').then(response => {
-        setCategorias(response.data);
-    })
-}
+    function getListCategori() {
+        api.get('/category/all').then(response => {
+            setCategorias(response.data);
+        })
+    }
 
 
     const [formData, setFormData] = useState({
@@ -40,6 +42,7 @@ function getListCategori(){
         const { name } = formData;
 
         await api.post('/category', JSON.stringify({ 'name': name }))
+
 
         getListCategori()
 
@@ -63,17 +66,17 @@ function getListCategori(){
                 <form onSubmit={handleSubmit}>
                     <h1>Cadastro do <br></br> Categoria</h1>
                     <div className="field">
-                        <label htmlFor="name">
-                            Categoria
-                        </label>
-                        <input
-                            type="text"
-                            name="name"
+
+                        <TextField
                             id="name"
+                            label="Categoria"
+                            name="name"
                             onChange={handelInputChange}
                         />
                     </div>
-                    <button type="submit">Cadastrar Catgoria</button>
+                    <div>
+                        <Button variant="contained" color="primary" type="submit">Cadastrar Catgoria</Button>
+                    </div>
                 </form>
             </div>
         </>
