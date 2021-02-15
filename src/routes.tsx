@@ -2,14 +2,18 @@ import React from 'react';
 import { Route, BrowserRouter } from 'react-router-dom';
 
 import LoginPage from './loginPage/index'
-import PrincipalPage from './principalPage/index'
+import CreateBill from './createBill';
+import CreateCategory from './createCategory';
+import CreatePaymentMethod from './createInstituition';
+
 
 const  Routes = () => {
     return(
         <BrowserRouter>
             <Route component={LoginPage} path="/" exact />
-            <Route component={PrincipalPage} path="/principalPage" exact />
-            {/* <Route component={CreatePoint} path="/creat-point" /> */}
+            <Route component={CreateBill} path="/conta" />
+            <Route component={CreateCategory} path="/categoria" />
+            <Route component={CreatePaymentMethod} path="/metodoPagamento" />
         </BrowserRouter>
     );
 }

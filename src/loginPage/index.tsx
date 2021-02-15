@@ -9,8 +9,6 @@ interface LoginResponse {
     token: string;
 }
 
-// const history = useHistory();
-
 const LoginPage = () => {
 
     const [formData, setFormData] = useState({
@@ -32,20 +30,11 @@ const LoginPage = () => {
 
         await api.post<LoginResponse>('/user/login', JSON.stringify({ 'email': email, 'password': password })).then(response => {
             localStorage.setItem('token', response.data.token);
-            let url: string = "http://" + window.location.host + "/principalPage"
+            let url: string = "http://" + window.location.host + "/conta"
             window.location.replace(url);
         })
 
     }
-
-    // function redirectPage() {
-    //     const history = useHistory();
-    //     history.location()
-    //      push('/principalPage');
-    // }
-
-
-
 
     return (
         <>
@@ -75,7 +64,6 @@ const LoginPage = () => {
                         />
                     </div>
                     <Button type="submit">Login</Button>
-                    {/* <Redirect to="/principalPage" /> */}
                 </form>
             </div>
         </>
