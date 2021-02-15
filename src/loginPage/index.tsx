@@ -29,9 +29,10 @@ const LoginPage = () => {
         const { email, password } = formData;
 
         await api.post<LoginResponse>('/user/login', JSON.stringify({ 'email': email, 'password': password })).then(response => {
-            localStorage.setItem('token', response.data.token);
+            localStorage.removeItem('token');
             let url: string = "http://" + window.location.host + "/conta"
             window.location.replace(url);
+            localStorage.setItem('token', response.data.token);
         })
 
     }
