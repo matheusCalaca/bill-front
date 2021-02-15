@@ -58,25 +58,31 @@ const CreateCategory = () => {
     return (
         <>
             <div>
-                <h1>Cateogry</h1>
-                <Grid container justify="center" spacing={2}>
-                    {categorias.map(categoria => (
-                        <Grid  item >
-                            <Paper key={categoria.id}>
-                                <Grid container >
-                                    <Grid alignContent="center">
-                                        <Typography align="center" variant="h5">
-                                            {categoria.name}
-                                        </Typography>
+                <Grid container spacing={3}>
+                    <Grid item justify="center" xs={12}>
+                        <Typography align="center" variant="h3">
+                            Cateogry
+                        </Typography>
+                    </Grid>
+                    <Grid container justify="center" spacing={2}>
+                        {categorias.map(categoria => (
+                            <Grid item >
+                                <Paper key={categoria.id} >
+                                    <Grid container >
+                                        <Grid alignContent="center">
+                                            <Typography align="center" variant="h5" style={{ padding: 5 }}>
+                                                {categoria.name}
+                                            </Typography>
+                                        </Grid>
+                                        <Grid style={{ padding: 5 }}>
+                                            <Button onClick={(e) => handleDelet(categoria.id)}>X</Button>
+                                        </Grid>
                                     </Grid>
-                                    <Grid>
-                                        <Button onClick={(e) => handleDelet(categoria.id)}>X</Button>
-                                    </Grid>
-                                </Grid>
-                            </Paper>
-                        </Grid>
-                    )
-                    )}
+                                </Paper>
+                            </Grid>
+                        )
+                        )}
+                    </Grid>
                 </Grid>
                 <form onSubmit={handleSubmit}>
                     <h1>Cadastro do <br></br> Categoria</h1>
