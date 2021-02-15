@@ -155,30 +155,30 @@ function App() {
           </div>
           <Divider />
           <List>
-            <ListItem button key="bill">
-              <Grid container  >
+            <ListItem button key="bill" onClick={() => redirectPage("conta")}>
+              <Grid  >
                 <Grid >
-                  <ListItemIcon onClick={() => redirectPage("conta")}><Description></Description> </ListItemIcon>
+                  <ListItemIcon ><Description></Description> </ListItemIcon>
                 </Grid>
                 <Grid >
                   <ListItemText primary="Conta" />
                 </Grid>
               </Grid>
             </ListItem>
-            <ListItem button key="category">
-              <Grid container  >
+            <ListItem button key="category" onClick={() => redirectPage("categoria")} >
+              <Grid >
                 <Grid >
-                  <ListItemIcon onClick={() => redirectPage("categoria")}><AllInbox></AllInbox> </ListItemIcon>
+                  <ListItemIcon ><AllInbox></AllInbox> </ListItemIcon>
                 </Grid>
                 <Grid >
                   <ListItemText primary="categoria" />
                 </Grid>
               </Grid>
             </ListItem>
-            <ListItem button key="metodoPagamento">
-              <Grid container  >
+            <ListItem button key="metodoPagamento"  onClick={() => redirectPage("metodoPagamento")}>
+              <Grid >
                 <Grid >
-                  <ListItemIcon onClick={() => redirectPage("metodoPagamento")}><AccountBalance></AccountBalance> </ListItemIcon>
+                  <ListItemIcon ><AccountBalance></AccountBalance> </ListItemIcon>
                 </Grid>
                 <Grid >
                   <ListItemText primary="metodoPagamento" />
