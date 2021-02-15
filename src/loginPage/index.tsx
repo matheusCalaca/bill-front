@@ -1,4 +1,4 @@
-import { Button } from '@material-ui/core';
+import { Button, Grid, TextField } from '@material-ui/core';
 import React, { ChangeEvent, FormEvent, useState, Component } from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
 import { withRouter } from 'react-router-dom';
@@ -38,34 +38,28 @@ const LoginPage = () => {
 
     return (
         <>
-            <div>
+            <Grid container
+                direction="row"
+                justify="center"
+                alignItems="center" >
                 <form onSubmit={handleSubmit}>
-                    <h1>Login</h1>
-                    <div className="field">
-                        <label htmlFor="name">
-                            E-MAIL
-                        </label>
-                        <input
-                            type="text"
-                            name="email"
-                            id="eamil"
-                            onChange={handelInputChange}
-                        />
-                    </div>
-                    <div className="field">
-                        <label htmlFor="name">
-                            Senha
-                        </label>
-                        <input
-                            type="password"
-                            name="password"
-                            id="password"
-                            onChange={handelInputChange}
-                        />
-                    </div>
-                    <Button type="submit">Login</Button>
+                    <Grid>
+                        <h1>Login</h1>
+                    </Grid>
+                    <Grid>
+                        <TextField id="email" label=" E-MAIL" variant="filled" type="text" name="email" onChange={handelInputChange} />
+                    </Grid>
+                    <Grid>
+                        <TextField id="password" label="Senha" variant="filled" type="password" name="password" onChange={handelInputChange} />
+                    </Grid>
+                    <Grid container
+                        direction="row"
+                        justify="center"
+                        alignItems="center">
+                        <Button type="submit" color="primary" size="large" >Login</Button>
+                    </Grid>
                 </form>
-            </div>
+            </Grid >
         </>
     )
 };
