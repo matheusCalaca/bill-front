@@ -1,11 +1,15 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import { Button } from '@material-ui/core';
+import React, { ChangeEvent, FormEvent, useState, Component } from 'react';
+import { Link, Redirect, useHistory } from 'react-router-dom';
+import { withRouter } from 'react-router-dom';
 import api from '../services/apiUser';
 
 interface LoginResponse {
-    
+
     token: string;
 }
 
+// const history = useHistory();
 
 const LoginPage = () => {
 
@@ -27,11 +31,20 @@ const LoginPage = () => {
         const { email, password } = formData;
 
         await api.post<LoginResponse>('/user/login', JSON.stringify({ 'email': email, 'password': password })).then(response => {
-           localStorage.setItem('token', response.data.token);
+            localStorage.setItem('token', response.data.token);
+            let url: string = "http://" + window.location.host + "/principalPage"
+            window.location.replace(url);
         })
 
-
     }
+
+    // function redirectPage() {
+    //     const history = useHistory();
+    //     history.location()
+    //      push('/principalPage');
+    // }
+
+
 
 
     return (
@@ -61,7 +74,8 @@ const LoginPage = () => {
                             onChange={handelInputChange}
                         />
                     </div>
-                    <button type="submit">Login</button>
+                    <Button type="submit">Login</Button>
+                    {/* <Redirect to="/principalPage" /> */}
                 </form>
             </div>
         </>

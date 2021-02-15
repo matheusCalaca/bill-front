@@ -1,5 +1,6 @@
 import { AppBar, Container, Grid, Toolbar } from '@material-ui/core';
 import React from 'react';
+import Routes from './routes';
 import CreateBill from './createBill';
 import CreateCategory from './createCategory';
 import CreatePaymentMethod from './createInstituition';
@@ -19,7 +20,8 @@ function App() {
         <main >
           <div />
           <Container  >
-            <Grid>
+            <Routes />
+            {/* <Grid>
               <LoginPage />
             </Grid>
             <Grid >
@@ -32,7 +34,7 @@ function App() {
             <hr />
             <Grid >
               <CreatePaymentMethod />
-            </Grid>
+            </Grid> */}
           </Container>
         </main>
       </div>
