@@ -261,6 +261,7 @@ const CreateBill = () => {
 
                 </List>
             </Grid>
+            <SimpleDialog selectedId={billID} open={open} onClose={handleClose} />
             <Fab color="primary" className={classes.fab} aria-label="add" onClick={() => redirectPage("criarBill")} >
                 <AddIcon />
             </Fab>

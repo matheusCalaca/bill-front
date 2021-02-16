@@ -250,7 +250,6 @@ const InsertBill = () => {
                             <button type="submit">Cadastrar</button>
                         </form>
                     </div>
-                    <SimpleDialog selectedId={billID} open={open} onClose={handleClose} />
                 </div>
             </div>
         </>
