@@ -1,4 +1,4 @@
-import { createStyles, Fab, Grid, List, ListItem, ListItemIcon, ListItemText, makeStyles, TableFooter, TablePagination, Theme, Typography } from '@material-ui/core';
+import { Grid, List, ListItem, ListItemIcon, ListItemText, TableFooter, TablePagination, Typography } from '@material-ui/core';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -11,7 +11,6 @@ import React, { ChangeEvent, Component, FormEvent, Props, UIEvent, useEffect, us
 import api from '../services/api';
 import SimpleDialog from '../createPayment';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { AddIcon } from '@material-ui/data-grid';
 
 
 
@@ -40,23 +39,7 @@ interface CategoryResponse {
     name: string;
 }
 
-const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-        root: {
-            backgroundColor: theme.palette.background.paper,
-            width: 500,
-            position: 'relative',
-            minHeight: 200,
-        },
-        fab: {
-            position: 'fixed',
-            bottom: theme.spacing(2),
-            right: theme.spacing(2),
-        },
-    }),
-);
-
-const CreateBill = () => {
+const InsertBill = () => {
 
     const [bills, setBills] = useState<BillResponse[]>([]);
     const [categorias, setCategorias] = useState<CategoryResponse[]>([])
@@ -68,7 +51,7 @@ const CreateBill = () => {
         getListBills()
     }, []);
 
-    const classes = useStyles();
+
 
     useEffect(() => {
         getConfsTable()
@@ -88,7 +71,7 @@ const CreateBill = () => {
         let page = bills.length
         if (bills.length < size || bills.length == 0) {
             setPage(page + 1)
-            let url = `/bill?page=${page}&size=${15}`
+            let url = `/bill?page=${page}&size=${5}`
             await api.get(url).then(response => {
                 let billResponse = response.data;
                 let data: BillResponse[] = billResponse;
@@ -191,82 +174,88 @@ const CreateBill = () => {
 
 
 
-    function colorList(status: string) {
-        if (status == "OPEN") {
-            return ""
-        }
-        if (status == "PAYMENT") {
-            return "limegreen"
-        }
-    }
-
-    const redirectPage = (page: string) => {
-        let url: string = "http://" + window.location.host + "/" + page
-        window.location.replace(url);
-    };
-
-
 
 
     return (
         <>
 
-            <Grid container
-                direction="column"
-                justify="center"
-                alignItems="center"
-                spacing={3}
-            >
-                <Grid item justify="center" xs={12}
-                >
-                    <Typography align="center" variant="h3">
-                        Conta {bills.length} - {rowsCount?.size}
-                    </Typography>
-                </Grid>
 
 
-                <List component="nav" aria-label="main mailbox folders"
 
-                >
-                    <InfiniteScroll
-                        dataLength={bills.length}
-                        next={getListBills}
-                        hasMore={true}
-                        loader={<h4>Loading...</h4>}
-                    >
-                        {bills.map(bill => (
-                            <ListItem button
-                                style={{ backgroundColor: colorList(bill.status) }}
-                                onClick={() => handleClickOpen(bill.id)}
-                                disabled={bill.status == 'PAYMENT'}
-                                key={bill.id}
-                            >
-                                <ListItemText primary={bill.description}
-                                    secondary={
-                                        <React.Fragment>
-                                            <Typography
-                                                component="span"
-                                                variant="body2"
-                                                color="textPrimary"
-                                            >
-                                                {bill.maturityDate}
-                                            </Typography>
-                                            {"-------- " + bill.id + " " + bill.status + " - R$" + bill.price}
-                                        </React.Fragment>
-                                    }
+            <div >
+
+                <div>
+                    <div>
+                        <form onSubmit={handleSubmit}>
+                            <h1>Cadastro de Conta </h1>
+                            <div className="field">
+                                <label htmlFor="description">
+                                    Descrição
+                                </label>
+                                <input
+                                    type="text"
+                                    name="description"
+                                    id="description"
+                                    onChange={handelInputChange}
                                 />
-                            </ListItem>
-                        ))}
-                    </InfiniteScroll>
+                            </div>
 
-                </List>
-            </Grid>
-            <Fab color="primary" className={classes.fab} aria-label="add" onClick={() => redirectPage("criarBill")} >
-                <AddIcon />
-            </Fab>
+
+                            <div className="field">
+                                <label htmlFor="price">
+                                    Preço
+                                </label>
+                                <input
+                                    type="number"
+                                    name="price"
+                                    id="price"
+                                    onChange={handelInputChange}
+                                />
+                            </div>
+
+
+                            <div className="field">
+                                <label htmlFor="maturityDate">
+                                    Data
+                                </label>
+                                <input
+                                    type="date"
+                                    name="maturityDate"
+                                    id="maturityDate"
+                                    onChange={handelInputChange}
+                                />
+                            </div>
+
+
+
+                            <div className="field">
+                                <label htmlFor="category">
+                                    Categoria
+                            </label>
+                                <select
+                                    name="category"
+                                    id="category"
+                                    value={selectedCategory}
+                                    onChange={handelSelectCategory}
+                                >
+                                    <option value="0">Selecione uma Categoria</option>
+                                    {
+                                        categorias.map(categoria => (
+                                            <option key={categoria.id} value={categoria.id}> {categoria.name}</option>
+                                        ))
+                                    }
+                                </select>
+                            </div>
+
+                            <button type="submit">Cadastrar</button>
+                        </form>
+                    </div>
+                    <SimpleDialog selectedId={billID} open={open} onClose={handleClose} />
+                </div>
+            </div>
         </>
 
     )
 };
 
-export default CreateBill;
+export default InsertBill;

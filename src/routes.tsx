@@ -7,6 +7,7 @@ import CreateCategory from './CategoryPage';
 import InsertCategory from './CategoryPage/insert';
 import CreatePaymentMethod from './createInstituition';
 import InsertInstution from './createInstituition/insert';
+import InsertBill from './createBill/insert';
 
 
 const  Routes = () => {
@@ -18,6 +19,7 @@ const  Routes = () => {
             <Route component={InsertCategory} path="/criarCategoria" />
             <Route component={CreatePaymentMethod} path="/metodoPagamento" />
             <Route component={InsertInstution} path="/criarMetodoPagamento" />
+            <Route component={InsertBill} path="/criarBill" />
         </BrowserRouter>
     );
 }
