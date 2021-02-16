@@ -66,7 +66,7 @@ const CreateCategory = () => {
                 </Grid>
                 <Grid container justify="center" spacing={2}>
                     {categorias.map(categoria => (
-                        <Grid item >
+                        <Grid item key={categoria.id} >
                             <Paper key={categoria.id} >
                                 <Grid container >
                                     <Grid alignContent="center">
