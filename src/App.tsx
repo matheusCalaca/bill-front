@@ -1,4 +1,4 @@
-import { Grid } from '@material-ui/core';
+import { Grid, Snackbar } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Divider from '@material-ui/core/Divider';
@@ -175,7 +175,7 @@ function App() {
                 </Grid>
               </Grid>
             </ListItem>
-            <ListItem button key="metodoPagamento"  onClick={() => redirectPage("metodoPagamento")}>
+            <ListItem button key="metodoPagamento" onClick={() => redirectPage("metodoPagamento")}>
               <Grid >
                 <Grid >
                   <ListItemIcon ><AccountBalance></AccountBalance> </ListItemIcon>
