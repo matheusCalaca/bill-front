@@ -3,8 +3,6 @@ import React, { ChangeEvent,  FormEvent, useEffect, useState } from 'react';
 import api from '../services/api';
 
 
-
-
 interface ConfTableResponse {
     size: number;
 }
@@ -84,10 +82,7 @@ const InsertBill = () => {
             }).catch(err => {
                 handleClick()
                 console.log(err);
-
             })
-
-
     }
 
     const [openSlack, setOpenlack] = useState(false);

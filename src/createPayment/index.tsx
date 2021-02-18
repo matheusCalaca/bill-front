@@ -6,6 +6,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import { blue } from '@material-ui/core/colors';
 import api from '../services/api';
+import { Button, Grid, Select, Snackbar, TextField, Typography } from '@material-ui/core';
+import { GridColumnHeaderMenu } from '@material-ui/data-grid';
 
 
 const useStyles = makeStyles({
@@ -33,6 +35,23 @@ export interface SimpleDialogProps {
 export default function SimpleDialog(props: SimpleDialogProps) {
     const classes = useStyles();
     const { onClose, selectedId, open } = props;
+
+
+    const [openSlack, setOpenlack] = useState(false);
+
+    const handleClickSlack = () => {
+        setOpenlack(true);
+    };
+
+    const handleCloseSlack = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpenlack(false);
+    };
+
+
 
     const handleClose = () => {
         onClose();
@@ -78,9 +97,15 @@ export default function SimpleDialog(props: SimpleDialogProps) {
         console.log(json);
 
         await api.post('/payment', json)
-        .then(response => {
-            handleClose();
-        });
+            .then(response => {
+                let url: string = "http://" + window.location.host + "/conta"
+                window.location.replace(url);
+                handleClose();
+            }).catch(err => {
+                handleClickSlack()
+                console.log(err);
+
+            })
 
     }
 
@@ -106,73 +131,92 @@ export default function SimpleDialog(props: SimpleDialogProps) {
     }
 
     return (
-        <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
-            <DialogTitle id="simple-dialog-title">realizar pagamento</DialogTitle>
-            <DialogContent>
-                <DialogContentText >
-                    <form onSubmit={handleSubmit}>
-                        <div className="field">
-                            <label htmlFor="description">
-                                Descrição
-                                </label>
-                            <input
-                                type="text"
-                                name="description"
-                                id="description"
-                                onChange={handelInputChange}
-                            />
-                        </div>
+        <>
+            <Dialog onClose={handleClose} aria-labelledby="simple-dialog-title" open={open}>
+                <DialogContent>
+                    <DialogContentText >
+                        <Grid container
+                            spacing={2}
+                            direction="column"
+                            justify="center"
+                            alignItems="center"
+                        >
+                            <Grid item xs={12}>
+                                <Typography align="center" variant="h3">
+                                    Realizar Pagamento
+                            </Typography>
+                            </Grid>
+                            <form onSubmit={handleSubmit}>
 
 
-                        <div className="field">
-                            <label htmlFor="receipt">
-                                receipt
-                                </label>
-                            <input
-                                type="text"
-                                name="receipt"
-                                id="receipt"
-                                onChange={handelInputChange}
-                            />
-                        </div>
+                                <Grid style={{ padding: 15 }}>
+
+                                    <TextField
+                                        id="description"
+                                        label="Descrição"
+                                        name="description"
+                                        onChange={handelInputChange}
+                                    />
+                                </Grid>
 
 
-                        <div className="field">
-                            <label htmlFor="datePayment">
-                                Data
-                                </label>
-                            <input
-                                type="date"
-                                name="datePayment"
-                                id="datePayment"
-                                onChange={handelInputChange}
-                            />
-                        </div>
+                                <Grid style={{ padding: 15 }}>
+
+                                    <TextField
+                                        id="receipt"
+                                        label="Receipt"
+                                        name="receipt"
+                                        onChange={handelInputChange}
+                                    />
+                                </Grid>
 
 
-                        <div className="field">
-                            <label htmlFor="category">
-                                Categoria
-                            </label>
-                            <select
-                                name="category"
-                                id="category"
-                                value={selectedPaymentMethod}
-                                onChange={handelSelectPaymentMethod}
-                            >
-                                <option value="0">Selecione uma forma de pagamento</option>
-                                {
-                                    paymentMethods.map(paymentMethod => (
-                                        <option key={paymentMethod.id} value={paymentMethod.id}> {paymentMethod.institutionName} ({paymentMethod.paymentMethod}) </option>
-                                    ))
-                                }
-                            </select>
-                        </div>
 
-                        <button type="submit">pagar</button>
-                    </form>
-                </DialogContentText>
-            </DialogContent>
-        </Dialog>
+                                <Grid style={{ padding: 15 }}>
+                                    <Grid><span>Data de Pagamento</span></Grid>
+                                    <TextField
+                                        id="datePayment"
+                                        name="datePayment"
+                                        type="date"
+                                        onChange={handelInputChange}
+                                    />
+                                </Grid>
+
+
+                                <Grid style={{ padding: 15 }}>
+                                    <Grid><span>Forma de Pagamento</span></Grid>
+                                    <Select
+                                        native
+                                        value={selectedPaymentMethod}
+                                        onChange={(e: any) => handelSelectPaymentMethod(e)}
+                                    >
+                                        <option value="0">Selecione</option>
+                                        {
+                                            paymentMethods.map(paymentMethod => (
+                                                <option key={paymentMethod.id} value={paymentMethod.id}> {paymentMethod.institutionName} ({paymentMethod.paymentMethod}) </option>
+                                            ))
+                                        }
+                                    </Select>
+                                </Grid>
+
+                                <Grid style={{ padding: 10 }}>
+                                    <Button variant="contained" color="primary" type="submit">Pagar</Button>
+                                </Grid>
+                            </form>
+                        </Grid>
+                    </DialogContentText>
+                </DialogContent>
+            </Dialog>
+            <Snackbar
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'center',
+                }}
+                open={openSlack}
+                autoHideDuration={6000}
+                onClose={handleCloseSlack}
+                message="Erro ao cadastrar"
+            />
+        </>
     );
 }
