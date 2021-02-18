@@ -15,11 +15,11 @@ const  Routes = () => {
         <BrowserRouter>
             <Route component={LoginPage} path="/" exact />
             <Route component={CreateBill} path="/conta" />
+            <Route component={InsertBill} path="/criarBill" />
             <Route component={CreateCategory} path="/categoria" />
             <Route component={InsertCategory} path="/criarCategoria" />
             <Route component={CreatePaymentMethod} path="/metodoPagamento" />
             <Route component={InsertInstution} path="/criarMetodoPagamento" />
-            <Route component={InsertBill} path="/criarBill" />
         </BrowserRouter>
     );
 }

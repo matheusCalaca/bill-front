@@ -101,7 +101,7 @@ const InsertCategory = () => {
                 open={openSlack}
                 autoHideDuration={6000}
                 onClose={handleClose}
-                message="Note archived"
+                message="Erro ao cadastrar"
             />
 
         </>
