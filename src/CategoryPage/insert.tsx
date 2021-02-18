@@ -1,10 +1,9 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import api from '../services/api';
-import { Grid, IconButton, Typography } from '@material-ui/core';
-import Snackbar, { SnackbarOrigin } from '@material-ui/core/Snackbar';
-import { CloseIcon } from '@material-ui/data-grid';
+import { Grid, Typography } from '@material-ui/core';
+import Snackbar from '@material-ui/core/Snackbar';
 
 interface CategoryResponse {
     id: number;
@@ -16,22 +15,19 @@ interface CategoryResponse {
 const InsertCategory = () => {
 
 
-  const [openSlack, setOpenlack] = useState(false);
+    const [openSlack, setOpenlack] = useState(false);
 
-  const handleClick = () => {
-    setOpenlack(true);
-  };
+    const handleClick = () => {
+        setOpenlack(true);
+    };
 
-  const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
-    if (reason === 'clickaway') {
-      return;
-    }
+    const handleClose = (event: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
+        if (reason === 'clickaway') {
+            return;
+        }
 
-    setOpenlack(false);
-  };
-
-
-
+        setOpenlack(false);
+    };
 
     const [formData, setFormData] = useState({
         name: '',
@@ -56,11 +52,10 @@ const InsertCategory = () => {
         }).catch(err => {
             handleClick()
             console.log(err);
-            
+
         })
 
     }
-
 
     return (
         <>

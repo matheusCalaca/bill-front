@@ -1,13 +1,5 @@
-import { createStyles, Fab, Grid, List, ListItem, ListItemIcon, ListItemText, makeStyles, TableFooter, TablePagination, Theme, Typography } from '@material-ui/core';
-import Paper from '@material-ui/core/Paper';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Button from '@material-ui/core/Button';
-import React, { ChangeEvent, Component, FormEvent, Props, UIEvent, useEffect, useState } from 'react';
+import { createStyles, Fab, Grid, List, ListItem, ListItemText, makeStyles, Theme, Typography } from '@material-ui/core';
+import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 import SimpleDialog from '../createPayment';
 import InfiniteScroll from 'react-infinite-scroll-component';
@@ -86,7 +78,7 @@ const CreateBill = () => {
     async function getListBills() {
         let size: number = rowsCount?.size === undefined ? 0 : rowsCount.size
         let page = bills.length
-        if (bills.length < size || bills.length == 0) {
+        if (bills.length < size || bills.length === 0) {
             setPage(page + 1)
             let url = `/bill?page=${page}&size=${15}`
             await api.get(url).then(response => {
@@ -113,55 +105,6 @@ const CreateBill = () => {
 
         sizeQt = rowsCount?.size == null ? 0 : rowsCount?.size;
         emptyRows = rowsPerPage - Math.min(rowsPerPage, sizeQt - page * rowsPerPage);
-    }
-
-
-    const [selectedCategory, setSelectedCategory] = useState('0');
-
-    const [formData, setFormData] = useState({
-        description: '',
-        maturityDate: '',
-        price: '',
-    });
-
-    function handelInputChange(event: ChangeEvent<HTMLInputElement>) {
-        const { name, value } = event.target
-        setFormData({
-            ...formData, [name]: value
-        })
-    }
-
-    async function handleSubmit(event: FormEvent) {
-        event.preventDefault();
-
-
-        const { description, maturityDate, price } = formData;
-
-        const data = new FormData();
-
-        data.append('description', description);
-        data.append('maturityDate', maturityDate);
-        data.append('price', price);
-        data.append('categoryId', selectedCategory);
-
-
-        var object: any = {};
-        data.forEach((value, key) => object[key] = value);
-        var json = JSON.stringify(object);
-
-
-        await api.post('/bill', json)
-            .then(response => {
-                alert("sucesso");
-                getConfsTable();
-            })
-
-
-    }
-
-    function handelSelectCategory(event: ChangeEvent<HTMLSelectElement>) {
-        const category = event.target.value;
-        setSelectedCategory(category);
     }
 
     async function deleteBill(id: number) {

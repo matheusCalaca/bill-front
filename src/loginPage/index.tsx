@@ -1,7 +1,5 @@
 import { Button, Grid, TextField } from '@material-ui/core';
-import React, { ChangeEvent, FormEvent, useState, Component } from 'react';
-import { Link, Redirect, useHistory } from 'react-router-dom';
-import { withRouter } from 'react-router-dom';
+import React, { ChangeEvent, FormEvent, useState } from 'react';
 import api from '../services/apiUser';
 
 interface LoginResponse {

@@ -1,10 +1,10 @@
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Fab from '@material-ui/core/Fab';
 import AddIcon from '@material-ui/icons/Add';
 import Button from '@material-ui/core/Button';
 import api from '../services/api';
-import { Grid, Link, Paper, Typography } from '@material-ui/core';
-import { makeStyles, useTheme, Theme, createStyles } from '@material-ui/core/styles';
+import { Grid, Paper, Typography } from '@material-ui/core';
+import { makeStyles, Theme, createStyles } from '@material-ui/core/styles';
 
 interface CategoryResponse {
     id: number;

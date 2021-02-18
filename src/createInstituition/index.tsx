@@ -1,6 +1,6 @@
 import { Button, createStyles, Fab, Grid, makeStyles, Paper, Theme, Typography } from '@material-ui/core';
 import { AddIcon } from '@material-ui/data-grid';
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 
 interface PaymentMethodResponse {
