@@ -1,10 +1,11 @@
-import { Button, Card, CardActions, CardContent, createStyles, Fab, Grid, IconButton, List, ListItem, ListItemText, makeStyles, Theme, Typography } from '@material-ui/core';
+import { Button, Card, CardActions, CardContent, createStyles, Fab, Grid, IconButton, List, ListItem, ListItemText, makeStyles, Select, Theme, Typography } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
-import React, { useEffect, useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 import api from '../services/api';
 import SimpleDialog from '../createPayment';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { AddIcon } from '@material-ui/data-grid';
+import { count } from 'console';
 
 
 
@@ -61,6 +62,7 @@ const CreateBill = () => {
     const [rowsCount, setRowsCount] = useState<ConfTableResponse>();
 
     useEffect(() => {
+        listYear()
         getListBills()
     }, []);
 
@@ -154,7 +156,38 @@ const CreateBill = () => {
         window.location.replace(url);
     };
 
+    function footerLoad(billSize: number, maxBills: number | undefined): string {
+        let size: number = maxBills === undefined ? 0 : maxBills
 
+        if (billSize === size) {
+            return " " + billSize + " - " + size
+        }
+
+        return " Carregando " + billSize + " - " + size
+    }
+
+
+
+    function listYear() {
+        let listYear: Array<number> = [];
+        let dataBase: number = new Date().getFullYear() - 2;
+
+        for (dataBase; dataBase <= new Date().getFullYear(); dataBase++) {
+            listYear.push(dataBase)
+        }
+
+        setYearOptions(listYear)
+    }
+
+    const [yearOptions, setYearOptions] = useState<Array<number>>([]);
+
+
+    const [year, setYear] = useState<number>(new Date().getFullYear());
+
+    const handleChangeSelect = (event: ChangeEvent<{ value: unknown }>) => {
+        const year = event.target.value as number;
+        setYear(year);
+    };
 
 
     return (
@@ -169,59 +202,81 @@ const CreateBill = () => {
                 <Grid item justify="center" xs={12}
                 >
                     <Typography align="center" variant="h3">
-                        Conta {bills.length} - {rowsCount?.size}
+                        Conta {year}
                     </Typography>
+
+                    <Select
+                        native
+                        value={year}
+                        onChange={handleChangeSelect}
+
+                    >
+                        {yearOptions.map(ano => (<option value={ano}>{ano}</option>))}
+                        
+                    </Select>
+
                 </Grid>
 
+                <Grid item justify="center" xs={12}>
 
-                <List component="nav" aria-label="main mailbox folders"
+                    <List component="nav" aria-label="main mailbox folders"
 
-                >
-                    <InfiniteScroll
-                        dataLength={bills.length}
-                        next={getListBills}
-                        hasMore={true}
-                        loader={<h4>Loading...</h4>}
                     >
-                        {bills.map(bill => (
-
-
-                            <ListItem
-                            >
-
-                                <Grid>
-                                    <Card variant="outlined"
-                                        className={classes.muiGridRoot}
-                                        style={{ backgroundColor: colorList(bill.status) ,   width: '100%'}}
-                                        key={bill.id}>
-                                        <CardContent onClick={() => handleClickOpen(bill.id, bill.status)}>
-                                            <Typography color="textPrimary" variant="h2">
-                                                {bill.description}
-                                            </Typography>
-                                            <br />
-                                            <Typography variant="h5">
-                                                {" R$" + bill.price}
-
-                                                {"ID: " + bill.id + " Status: " + bill.status}
-                        
-                                                {"Data de Vencimento: " + bill.maturityDate}
-                                            </Typography>
-
-                                        </CardContent>
-                                        <CardActions>
-                                            <IconButton aria-label="delete" onClick={() => deleteBill(bill.id)} disabled={bill.status == 'PAYMENT'}>
-                                                <DeleteIcon />
-                                            </IconButton>
-
-                                        </CardActions>
-                                    </Card>
+                        <InfiniteScroll
+                            dataLength={bills.length}
+                            next={getListBills}
+                            hasMore={true}
+                            loader={<React.Fragment>
+                                <Grid
+                                    container
+                                    direction="column"
+                                    justify="center"
+                                    alignItems="center"
+                                >
+                                    <h4>{footerLoad(bills.length, rowsCount?.size)}</h4>
                                 </Grid>
-                            </ListItem>
-                        ))}
-                    </InfiniteScroll>
+                            </React.Fragment>}
+                        >
+                            {bills.map(bill => (
 
-                </List>
-            </Grid>
+
+                                <ListItem
+                                >
+
+                                    <Grid>
+                                        <Card variant="outlined"
+                                            className={classes.muiGridRoot}
+                                            style={{ backgroundColor: colorList(bill.status), width: '100%' }}
+                                            key={bill.id}>
+                                            <CardContent onClick={() => handleClickOpen(bill.id, bill.status)}>
+                                                <Typography color="textPrimary" variant="h2">
+                                                    {bill.description}
+                                                </Typography>
+                                                <br />
+                                                <Typography variant="h5">
+                                                    {" R$" + bill.price}
+
+                                                    {"ID: " + bill.id + " Status: " + bill.status}
+
+                                                    {"Data de Vencimento: " + bill.maturityDate}
+                                                </Typography>
+
+                                            </CardContent>
+                                            <CardActions>
+                                                <IconButton aria-label="delete" onClick={() => deleteBill(bill.id)} disabled={bill.status == 'PAYMENT'}>
+                                                    <DeleteIcon />
+                                                </IconButton>
+
+                                            </CardActions>
+                                        </Card>
+                                    </Grid>
+                                </ListItem>
+                            ))}
+                        </InfiniteScroll>
+
+                    </List>
+                </Grid>
+            </Grid >
             <SimpleDialog selectedId={billID} open={open} onClose={handleClose} />
             <Fab color="primary" className={classes.fab} aria-label="add" onClick={() => redirectPage("criarBill")} >
                 <AddIcon />
