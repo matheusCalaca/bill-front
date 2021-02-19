@@ -1,4 +1,5 @@
-import { createStyles, Fab, Grid, List, ListItem, ListItemText, makeStyles, Theme, Typography } from '@material-ui/core';
+import { Button, Card, CardActions, CardContent, createStyles, Fab, Grid, IconButton, List, ListItem, ListItemText, makeStyles, Theme, Typography } from '@material-ui/core';
+import DeleteIcon from '@material-ui/icons/Delete';
 import React, { useEffect, useState } from 'react';
 import api from '../services/api';
 import SimpleDialog from '../createPayment';
@@ -44,6 +45,9 @@ const useStyles = makeStyles((theme: Theme) =>
             position: 'fixed',
             bottom: theme.spacing(2),
             right: theme.spacing(2),
+        },
+        muiGridRoot: {
+            width: '100%',
         },
     }),
 );
@@ -112,7 +116,7 @@ const CreateBill = () => {
             getConfsTable();
         }).catch(err => {
             console.log(err);
-
+            redirectPage("conta");
         });
     }
 
@@ -123,9 +127,11 @@ const CreateBill = () => {
     const [billID, setBillID] = React.useState(0);
 
 
-    const handleClickOpen = (value: number) => {
-        setBillID(value);
-        setOpen(true);
+    const handleClickOpen = (value: number, status: string) => {
+        if (status != 'PAYMENT') {
+            setBillID(value);
+            setOpen(true);
+        }
     };
 
     const handleClose = () => {
@@ -178,26 +184,38 @@ const CreateBill = () => {
                         loader={<h4>Loading...</h4>}
                     >
                         {bills.map(bill => (
-                            <ListItem button
-                                style={{ backgroundColor: colorList(bill.status) }}
-                                onClick={() => handleClickOpen(bill.id)}
-                                disabled={bill.status == 'PAYMENT'}
-                                key={bill.id}
+
+
+                            <ListItem
                             >
-                                <ListItemText primary={bill.description}
-                                    secondary={
-                                        <React.Fragment>
-                                            <Typography
-                                                component="span"
-                                                variant="body2"
-                                                color="textPrimary"
-                                            >
-                                                {bill.maturityDate}
+
+                                <Grid>
+                                    <Card variant="outlined"
+                                        className={classes.muiGridRoot}
+                                        style={{ backgroundColor: colorList(bill.status) ,   width: '100%'}}
+                                        key={bill.id}>
+                                        <CardContent onClick={() => handleClickOpen(bill.id, bill.status)}>
+                                            <Typography color="textPrimary" variant="h2">
+                                                {bill.description}
                                             </Typography>
-                                            {"-------- " + bill.id + " " + bill.status + " - R$" + bill.price}
-                                        </React.Fragment>
-                                    }
-                                />
+                                            <br />
+                                            <Typography variant="h5">
+                                                {" R$" + bill.price}
+
+                                                {"ID: " + bill.id + " Status: " + bill.status}
+                        
+                                                {"Data de Vencimento: " + bill.maturityDate}
+                                            </Typography>
+
+                                        </CardContent>
+                                        <CardActions>
+                                            <IconButton aria-label="delete" onClick={() => deleteBill(bill.id)} disabled={bill.status == 'PAYMENT'}>
+                                                <DeleteIcon />
+                                            </IconButton>
+
+                                        </CardActions>
+                                    </Card>
+                                </Grid>
                             </ListItem>
                         ))}
                     </InfiniteScroll>
