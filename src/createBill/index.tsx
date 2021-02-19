@@ -184,7 +184,7 @@ const CreateBill = () => {
 
     const [year, setYear] = useState<number>(new Date().getFullYear());
 
-    const handleChangeSelect = (event: ChangeEvent<{ value: unknown }>) => {
+    const handleChangeSelectYear = (event: ChangeEvent<{ value: unknown }>) => {
         const year = event.target.value as number;
         setYear(year);
     };
@@ -208,7 +208,7 @@ const CreateBill = () => {
                     <Select
                         native
                         value={year}
-                        onChange={handleChangeSelect}
+                        onChange={handleChangeSelectYear}
 
                     >
                         {yearOptions.map(ano => (<option value={ano}>{ano}</option>))}
