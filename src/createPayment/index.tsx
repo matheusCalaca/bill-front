@@ -1,21 +1,9 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react';
-import { makeStyles } from '@material-ui/core/styles';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Dialog from '@material-ui/core/Dialog';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import { blue } from '@material-ui/core/colors';
 import api from '../services/api';
 import { Button, Grid, Select, Snackbar, TextField, Typography } from '@material-ui/core';
-import { GridColumnHeaderMenu } from '@material-ui/data-grid';
-
-
-const useStyles = makeStyles({
-    avatar: {
-        backgroundColor: blue[100],
-        color: blue[600],
-    },
-});
 
 
 interface PaymentMethodResponse {
@@ -24,16 +12,13 @@ interface PaymentMethodResponse {
     paymentMethod: string;
 }
 
-
 export interface SimpleDialogProps {
     open: boolean;
-
     selectedId: number;
     onClose: () => void;
 }
 
-export default function SimpleDialog(props: SimpleDialogProps) {
-    const classes = useStyles();
+export default function PaymentDialog(props: SimpleDialogProps) {
     const { onClose, selectedId, open } = props;
 
 
@@ -51,18 +36,11 @@ export default function SimpleDialog(props: SimpleDialogProps) {
         setOpenlack(false);
     };
 
-
-
     const handleClose = () => {
         onClose();
     };
 
-    const handleListItemClick = (value: string) => {
-        onClose();
-    };
-
     const [formData, setFormData] = useState({
-
         datePayment: '',
         paymentMethodID: 0,
         description: '',
@@ -117,8 +95,6 @@ export default function SimpleDialog(props: SimpleDialogProps) {
         const paymentMethod = event.target.value;
         setSelectedPaymentMethod(paymentMethod);
     }
-
-
 
     useEffect(() => {
         getListPaymentMethod()

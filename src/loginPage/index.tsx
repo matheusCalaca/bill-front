@@ -30,7 +30,7 @@ const LoginPage = () => {
         await api.post<LoginResponse>('/user/login', JSON.stringify({ 'email': email, 'password': password })).then(response => {
             localStorage.removeItem('token');
             localStorage.removeItem('duration');
-            let url: string = "http://" + window.location.host + "/conta"
+            let url: string = "http://" + window.location.host + "/"
             window.location.replace(url);
             localStorage.setItem('token', response.data.token);
             localStorage.setItem('duration', response.data.duration);

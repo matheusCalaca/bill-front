@@ -1,13 +1,10 @@
-import { Button, Card, CardActions, CardContent, createStyles, Fab, Grid, IconButton, List, ListItem, ListItemText, makeStyles, Select, Theme, Typography } from '@material-ui/core';
+import { Card, CardActions, CardContent, createStyles, Fab, Grid, IconButton, List, ListItem, ListItemText, makeStyles, Select, Theme, Typography } from '@material-ui/core';
 import DeleteIcon from '@material-ui/icons/Delete';
 import React, { ChangeEvent, useEffect, useState } from 'react';
 import api from '../services/api';
-import SimpleDialog from '../createPayment';
+import PaymentDialog from '../createPayment';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { AddIcon } from '@material-ui/data-grid';
-import { count } from 'console';
-
-
 
 interface ConfTableResponse {
     size: number;
@@ -332,7 +329,7 @@ const CreateBill = () => {
                     </List>
                 </Grid>
             </Grid >
-            <SimpleDialog selectedId={billID} open={open} onClose={handleClose} />
+            <PaymentDialog selectedId={billID} open={open} onClose={handleClose} />
             <Fab color="primary" className={classes.fab} aria-label="add" onClick={() => redirectPage("criarBill")} >
                 <AddIcon />
             </Fab>

@@ -69,7 +69,7 @@ const InsertInstution = () => {
             >
                 <Grid item xs={12}>
                     <Typography align="center" variant="h3">
-                        Cadastro de Metodo de Pagamento
+                        Metodo de Pagamento
                     </Typography>
                 </Grid>
                 <form onSubmit={handleSubmit}>

@@ -5,8 +5,8 @@ import LoginPage from './loginPage/index'
 import CreateBill from './createBill';
 import CreateCategory from './CategoryPage';
 import InsertCategory from './CategoryPage/insert';
-import CreatePaymentMethod from './createInstituition';
-import InsertInstution from './createInstituition/insert';
+import CreatePaymentMethod from './metodoDePagamento';
+import InsertInstution from './metodoDePagamento/insert';
 import InsertBill from './createBill/insert';
 
 
