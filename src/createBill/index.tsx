@@ -71,15 +71,24 @@ const CreateBill = () => {
     const [month, setMonth] = useState<number>(new Date().getMonth());
 
     useEffect(() => {
-        getConfsTable()
+        // getConfsTable()
         getListCategoras()
         listYear()
     }, []);
 
 
     useEffect(() => {
-        setBills([])
-        getListBills()
+        getConfsTable();
+    }, [year]);
+
+
+    useEffect(() => {
+        getConfsTable();
+    }, [month]);
+
+
+    useEffect(() => {
+        getListBills(false)
     }, [rowsCount]);
 
     const classes = useStyles();
@@ -93,23 +102,31 @@ const CreateBill = () => {
     }
 
 
-    async function getListBills() {
+    async function getListBills(acresentar: boolean) {
         let size: number = rowsCount?.size === undefined ? 0 : rowsCount.size
-        let page = bills.length
-        if (bills.length < size || bills.length === 0) {
+
+        if (bills.length < size && size != 0) {
             setPage(page + 1)
             let realmonth = Number(month) + 1
             let url = `/bill?page=${page}&size=${15}&year=${year}&month=${realmonth}`
             await api.get(url).then(response => {
                 let billResponse = response.data;
                 let data: BillResponse[] = billResponse;
-                data.forEach(function (bill) {
-                    setBills(b => [...b, bill]);
-                })
+                if (acresentar) {
+                    data.forEach(function (bill) {
+                        setBills(b => [...b, bill]);
+                    })
+                } else {
+                    setBills(response.data);
+                }
             })
         }
     }
 
+
+    async function getListBillsNext() {
+        await getListBills(true);
+    }
 
     let sizeQt = rowsCount?.size == null ? 0 : rowsCount?.size;
 
@@ -121,8 +138,8 @@ const CreateBill = () => {
         let realmonth = Number(month) + 1
         let url = `/bill/confTable?year=${year}&month=${realmonth}`
         await api.get(url).then(response => {
-            console.log("-------CONF-----------");
-            
+            setBills([])
+            setPage(0)
             setRowsCount(response.data);
         });
 
@@ -167,23 +184,23 @@ const CreateBill = () => {
             return "limegreen"
         }
     }
-    
+
     const redirectPage = (page: string) => {
         let url: string = "http://" + window.location.host + "/" + page
         window.location.replace(url);
     };
-    
+
     function footerLoad(billSize: number, maxBills: number | undefined): string {
         let size: number = maxBills === undefined ? 0 : maxBills
-        
+
         if (billSize === size) {
             return " " + billSize + " - " + size
         }
-        
+
         return " Carregando " + billSize + " - " + size
     }
-    
-    
+
+
 
     function listYear() {
         let listYear: Array<number> = [];
@@ -192,21 +209,16 @@ const CreateBill = () => {
         for (dataBase; dataBase <= new Date().getFullYear(); dataBase++) {
             listYear.push(dataBase)
         }
-        
+
         setYearOptions(listYear)
     }
 
 
-    
+
     const handleChangeSelectYear = (event: ChangeEvent<{ value: unknown }>) => {
         const year = event.target.value as number;
         setYear(year);
     };
-
-    useEffect(() => {
-        getConfsTable();
-    }, [year]);
-
 
 
 
@@ -214,12 +226,7 @@ const CreateBill = () => {
         let month = event.target.value as number;
         setMonth(month);
     };
-    
-    useEffect(() => {
-        getConfsTable();
-    }, [month]);
-    
-    
+
     return (
         <>
 
@@ -272,7 +279,7 @@ const CreateBill = () => {
                     <List component="nav" aria-label="main mailbox folders">
                         <InfiniteScroll
                             dataLength={bills.length}
-                            next={getListBills}
+                            next={getListBillsNext}
                             hasMore={true}
                             loader={<React.Fragment>
                                 <Grid
