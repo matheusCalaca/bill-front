@@ -17,6 +17,7 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import React, { useState } from 'react';
+import LoginPage from './loginPage';
 import Routes from './routes';
 
 const drawerWidth = 240;
@@ -98,6 +99,14 @@ function App() {
     let url: string = "http://" + window.location.host + "/" + page
     window.location.replace(url);
   };
+
+console.log("localStorage.getItem('token') === null");
+console.log(localStorage.getItem('token') === null);
+
+  if (localStorage.getItem('token') === null) {
+    return <LoginPage></LoginPage>
+  }
+
 
   return (
     <>
