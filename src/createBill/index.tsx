@@ -34,6 +34,11 @@ interface CategoryResponse {
     name: string;
 }
 
+interface monthSelect {
+    id: number;
+    name: string;
+}
+
 const useStyles = makeStyles((theme: Theme) =>
     createStyles({
         root: {
@@ -189,39 +194,66 @@ const CreateBill = () => {
         setYear(year);
     };
 
+    const monthOptions: Array<monthSelect> = [{ id: 0, name: 'Janeiro' }, { id: 1, name: 'Fevereiro' }, { id: 2, name: 'Março' }, { id: 3, name: 'Abril' }, { id: 4, name: 'Maio' }, { id: 5, name: 'Junho' }, { id: 6, name: 'Julho' }, { id: 7, name: 'Agosto' }, { id: 8, name: 'Setembro' }, { id: 9, name: 'Outubro' }, { id: 10, name: 'Novembro' }, { id: 11, name: 'Dezembro' }]
+
+    const [month, setMonth] = useState<number>(new Date().getMonth());
+
+    const handleChangeSelectMonth = (event: ChangeEvent<{ value: unknown }>) => {
+        let month = event.target.value as number;
+        setMonth(month + 1);
+    };
+
 
     return (
         <>
 
             <Grid container
-                direction="column"
+                direction="row"
                 justify="center"
                 alignItems="center"
                 spacing={3}
             >
-                <Grid item justify="center" xs={12}
-                >
-                    <Typography align="center" variant="h3">
-                        Conta {year}
-                    </Typography>
+                <Grid item justify="center" xs={12}>
+                    <Grid >
+                        <Typography align="center" variant="h3">
+                            Conta {month}/{year}
+                        </Typography>
+                    </Grid>
 
-                    <Select
-                        native
-                        value={year}
-                        onChange={handleChangeSelectYear}
-
-                    >
-                        {yearOptions.map(ano => (<option value={ano}>{ano}</option>))}
+                    <Grid container
+                        direction="row"
+                        justify="flex-end"
+                        alignItems="flex-start"
                         
-                    </Select>
+                    >
+                        <Grid >
+                            <Select
+                                native
+                                value={year}
+                                onChange={handleChangeSelectYear}
+                            >
+                                {yearOptions.map(ano => (<option value={ano}>{ano}</option>))}
 
+                            </Select>
+                        </Grid>
+
+                        <Grid>
+                            <Select
+                                native
+                                value={month}
+                                onChange={handleChangeSelectMonth}
+
+                            >
+                                {monthOptions.map(mes => (<option value={mes.id}>{mes.name}</option>))}
+
+                            </Select>
+                        </Grid>
+                    </Grid>
                 </Grid>
 
                 <Grid item justify="center" xs={12}>
 
-                    <List component="nav" aria-label="main mailbox folders"
-
-                    >
+                    <List component="nav" aria-label="main mailbox folders">
                         <InfiniteScroll
                             dataLength={bills.length}
                             next={getListBills}
