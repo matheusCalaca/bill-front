@@ -121,6 +121,8 @@ const CreateBill = () => {
         let realmonth = Number(month) + 1
         let url = `/bill/confTable?year=${year}&month=${realmonth}`
         await api.get(url).then(response => {
+            console.log("-------CONF-----------");
+            
             setRowsCount(response.data);
         });
 

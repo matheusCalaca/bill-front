@@ -8,7 +8,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
-import { createStyles, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
+import { createStyles, duration, makeStyles, Theme, useTheme } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { AccountBalance, AllInbox, Description } from '@material-ui/icons';
@@ -100,10 +100,23 @@ function App() {
     window.location.replace(url);
   };
 
-console.log("localStorage.getItem('token') === null");
-console.log(localStorage.getItem('token') === null);
+  function validaLogin(): boolean {
+    let hasToken = localStorage.getItem('token') !== null;
+    let dateDuration = Number(localStorage.getItem('duration')) * 1000;
+    let now = new Date().getTime();
 
-  if (localStorage.getItem('token') === null) {
+    if (hasToken && (dateDuration > now)) {
+      return false;
+    }
+
+    
+    localStorage.removeItem('token');
+    localStorage.removeItem('duration');
+    return true;
+
+  }
+
+  if (validaLogin()) {
     return <LoginPage></LoginPage>
   }
 

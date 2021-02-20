@@ -13,7 +13,7 @@ import InsertBill from './createBill/insert';
 const  Routes = () => {
     return(
         <BrowserRouter>
-            <Route component={LoginPage} path="/" exact />
+            <Route component={CreateBill} path="/" exact />
             <Route component={CreateBill} path="/conta" />
             <Route component={InsertBill} path="/criarBill" />
             <Route component={CreateCategory} path="/categoria" />
