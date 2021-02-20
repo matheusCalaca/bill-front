@@ -91,7 +91,10 @@ const CreateBill = () => {
         let page = bills.length
         if (bills.length < size || bills.length === 0) {
             setPage(page + 1)
-            let url = `/bill?page=${page}&size=${15}`
+            let realmonth = month + 1
+            console.log(realmonth);
+            
+            let url = `/bill?page=${page}&size=${15}&year=${year}&month=${realmonth}`
             await api.get(url).then(response => {
                 let billResponse = response.data;
                 let data: BillResponse[] = billResponse;
@@ -109,7 +112,9 @@ const CreateBill = () => {
 
 
     function getConfsTable() {
-        let url = `/bill/confTable`
+
+        let realmonth = month + 1
+        let url = `/bill/confTable?year=${year}&month=${realmonth}`
         api.get(url).then(response => {
             setRowsCount(response.data);
         });
