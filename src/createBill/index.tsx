@@ -65,14 +65,22 @@ const CreateBill = () => {
     const [page, setPage] = useState(0);
     const [rowsPerPage, setRowsPerPage] = useState(5);
     const [rowsCount, setRowsCount] = useState<ConfTableResponse>();
+    const [yearOptions, setYearOptions] = useState<Array<number>>([]);
+    const [year, setYear] = useState<number>(new Date().getFullYear());
+    const monthOptions: Array<monthSelect> = [{ id: 0, name: 'Janeiro' }, { id: 1, name: 'Fevereiro' }, { id: 2, name: 'Março' }, { id: 3, name: 'Abril' }, { id: 4, name: 'Maio' }, { id: 5, name: 'Junho' }, { id: 6, name: 'Julho' }, { id: 7, name: 'Agosto' }, { id: 8, name: 'Setembro' }, { id: 9, name: 'Outubro' }, { id: 10, name: 'Novembro' }, { id: 11, name: 'Dezembro' }]
+    const [month, setMonth] = useState<number>(new Date().getMonth());
 
     useEffect(() => {
         getConfsTable()
-
         getListCategoras()
         listYear()
-        getListBills()
     }, []);
+
+
+    useEffect(() => {
+        setBills([])
+        getListBills()
+    }, [rowsCount]);
 
     const classes = useStyles();
 
@@ -90,9 +98,7 @@ const CreateBill = () => {
         let page = bills.length
         if (bills.length < size || bills.length === 0) {
             setPage(page + 1)
-            let realmonth = month + 1
-            console.log(realmonth);
-
+            let realmonth = Number(month) + 1
             let url = `/bill?page=${page}&size=${15}&year=${year}&month=${realmonth}`
             await api.get(url).then(response => {
                 let billResponse = response.data;
@@ -112,7 +118,7 @@ const CreateBill = () => {
 
     async function getConfsTable() {
 
-        let realmonth = month + 1
+        let realmonth = Number(month) + 1
         let url = `/bill/confTable?year=${year}&month=${realmonth}`
         await api.get(url).then(response => {
             setRowsCount(response.data);
@@ -159,23 +165,23 @@ const CreateBill = () => {
             return "limegreen"
         }
     }
-
+    
     const redirectPage = (page: string) => {
         let url: string = "http://" + window.location.host + "/" + page
         window.location.replace(url);
     };
-
+    
     function footerLoad(billSize: number, maxBills: number | undefined): string {
         let size: number = maxBills === undefined ? 0 : maxBills
-
+        
         if (billSize === size) {
             return " " + billSize + " - " + size
         }
-
+        
         return " Carregando " + billSize + " - " + size
     }
-
-
+    
+    
 
     function listYear() {
         let listYear: Array<number> = [];
@@ -184,42 +190,34 @@ const CreateBill = () => {
         for (dataBase; dataBase <= new Date().getFullYear(); dataBase++) {
             listYear.push(dataBase)
         }
-
+        
         setYearOptions(listYear)
     }
 
-    const [yearOptions, setYearOptions] = useState<Array<number>>([]);
 
-
-    const [year, setYear] = useState<number>(new Date().getFullYear());
-
+    
     const handleChangeSelectYear = (event: ChangeEvent<{ value: unknown }>) => {
         const year = event.target.value as number;
         setYear(year);
     };
 
     useEffect(() => {
-        reloadBills()
+        getConfsTable();
     }, [year]);
 
 
-    function reloadBills() {
-        setBills([]);
-        getConfsTable();
-        getListBills();
-    }
 
-
-    const monthOptions: Array<monthSelect> = [{ id: 0, name: 'Janeiro' }, { id: 1, name: 'Fevereiro' }, { id: 2, name: 'Março' }, { id: 3, name: 'Abril' }, { id: 4, name: 'Maio' }, { id: 5, name: 'Junho' }, { id: 6, name: 'Julho' }, { id: 7, name: 'Agosto' }, { id: 8, name: 'Setembro' }, { id: 9, name: 'Outubro' }, { id: 10, name: 'Novembro' }, { id: 11, name: 'Dezembro' }]
-
-    const [month, setMonth] = useState<number>(new Date().getMonth());
 
     const handleChangeSelectMonth = (event: ChangeEvent<{ value: unknown }>) => {
         let month = event.target.value as number;
-        setMonth(month + 1);
+        setMonth(month);
     };
-
-
+    
+    useEffect(() => {
+        getConfsTable();
+    }, [month]);
+    
+    
     return (
         <>
 
