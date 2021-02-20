@@ -67,17 +67,16 @@ const CreateBill = () => {
     const [rowsCount, setRowsCount] = useState<ConfTableResponse>();
 
     useEffect(() => {
+        getConfsTable()
+
+        getListCategoras()
         listYear()
         getListBills()
     }, []);
 
     const classes = useStyles();
 
-    useEffect(() => {
-        getConfsTable()
 
-        getListCategoras()
-    }, []);
 
     function getListCategoras() {
         api.get('/category/all').then(response => {
@@ -93,7 +92,7 @@ const CreateBill = () => {
             setPage(page + 1)
             let realmonth = month + 1
             console.log(realmonth);
-            
+
             let url = `/bill?page=${page}&size=${15}&year=${year}&month=${realmonth}`
             await api.get(url).then(response => {
                 let billResponse = response.data;
@@ -111,11 +110,11 @@ const CreateBill = () => {
     let emptyRows = rowsPerPage - Math.min(rowsPerPage, sizeQt - page * rowsPerPage);
 
 
-    function getConfsTable() {
+    async function getConfsTable() {
 
         let realmonth = month + 1
         let url = `/bill/confTable?year=${year}&month=${realmonth}`
-        api.get(url).then(response => {
+        await api.get(url).then(response => {
             setRowsCount(response.data);
         });
 
@@ -199,6 +198,18 @@ const CreateBill = () => {
         setYear(year);
     };
 
+    useEffect(() => {
+        reloadBills()
+    }, [year]);
+
+
+    function reloadBills() {
+        setBills([]);
+        getConfsTable();
+        getListBills();
+    }
+
+
     const monthOptions: Array<monthSelect> = [{ id: 0, name: 'Janeiro' }, { id: 1, name: 'Fevereiro' }, { id: 2, name: 'Março' }, { id: 3, name: 'Abril' }, { id: 4, name: 'Maio' }, { id: 5, name: 'Junho' }, { id: 6, name: 'Julho' }, { id: 7, name: 'Agosto' }, { id: 8, name: 'Setembro' }, { id: 9, name: 'Outubro' }, { id: 10, name: 'Novembro' }, { id: 11, name: 'Dezembro' }]
 
     const [month, setMonth] = useState<number>(new Date().getMonth());
@@ -229,7 +240,7 @@ const CreateBill = () => {
                         direction="row"
                         justify="flex-end"
                         alignItems="flex-start"
-                        
+
                     >
                         <Grid >
                             <Select
