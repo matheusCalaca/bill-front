@@ -2,7 +2,7 @@ import axios from 'axios';
 
 //     //   "Access-Control-Allow-Headers": "Authorization", 
 const api = axios.create({
-    baseURL: 'http://localhost:8082',
+    baseURL: process.env.REACT_APP_HOST_USER,
 
     headers: {
         "Access-Control-Allow-Origin": "*",
