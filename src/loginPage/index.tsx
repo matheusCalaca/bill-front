@@ -46,7 +46,7 @@ const LoginPage = () => {
                 alignItems="center" >
                 <form onSubmit={handleSubmit}>
                     <Grid>
-                        <h1>Login {process.env.NODE_ENV} / {process.env.TESTE}</h1>
+                        <h1>Login {process.env.NODE_ENV} / {process.env.REACT_APP_TESTE}</h1>
                     </Grid>
                     <Grid>
                         <TextField id="email" label=" E-MAIL" variant="filled" type="text" name="email" onChange={handelInputChange} />
