@@ -1,0 +1,18 @@
+.root {
+  display: 'flex';
+}
+
+.appBarShift {
+  width: calc(100% - 240px);
+  margin-left: 240px,
+}
+
+.menuButton{
+  margin-right: 16px;
+}
+
+.drawerHeader {
+  display: 'flex';
+  align-items: 'center';
+  justify-content: 'flex-end';
+}
