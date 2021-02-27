@@ -10,7 +10,7 @@ import { HomeBill } from "../Components/Bill/HomeBill";
 import { GetServerSideProps } from "next";
 import { CategoriaProvider } from '../contexts/CategoriContext'
 import api from './api/api'
-import { Session } from "inspector";
+import { HomeCategory } from "../Components/category/HomeCategory";
 
 
 interface CategoryResponse {
@@ -116,10 +116,11 @@ export default function Home(props: CategoriasContextData) {
                     </Drawer>
                 </div>
                 <main className={styles.content}>
-                    {/* <CategoriaProvider categorias={props.categorias}>
-                        <CreateBill />
-                    </CategoriaProvider> */}
-                    <HomeBill />
+                    <CategoriaProvider categorias={props.categorias}>
+                        {/* <CreateBill /> */}
+                        <HomeCategory />
+                    </CategoriaProvider>
+                    {/* <HomeBill /> */}
                 </main>
             </div>
 

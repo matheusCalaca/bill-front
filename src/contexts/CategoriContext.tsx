@@ -1,4 +1,5 @@
 import { createContext, useState, ReactNode } from 'react';
+import api from '../pages/api/api'
 
 
 interface CategoryResponse {
@@ -8,6 +9,7 @@ interface CategoryResponse {
 
 interface CategoriasContextData {
     categorias: CategoryResponse[];
+    reloadCategorias: () => void;
 }
 
 interface CategoriaProviderProps {
@@ -25,7 +27,11 @@ export function CategoriaProvider({
 
     const [categorias, setCategorias] = useState<CategoryResponse[]>(rest.categorias ?? [])
 
-
+    function reloadCategorias() {
+        api.get('/category/all').then(response => {
+            setCategorias(response.data);
+        })
+    }
 
 
     return (
