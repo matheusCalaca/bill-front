@@ -1,0 +1,26 @@
+.root {
+  background-color: '#424242';
+  width: 500;
+  position: 'relative';
+  min-height: 200;
+}
+
+.fab {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+}
+
+.muiGridRoot {
+  width: '100%',
+}
+
+.content {
+  margin-right: 1rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.content > div {
+  margin-right:0.5rem;
+}

@@ -6,9 +6,11 @@ import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import { CreateBill } from "../Components/Bill/create/CreateBill";
+import { HomeBill } from "../Components/Bill/HomeBill";
 import { GetServerSideProps } from "next";
-import { CategoriaProvider }  from '../contexts/CategoriContext'
+import { CategoriaProvider } from '../contexts/CategoriContext'
 import api from './api/api'
+import { Session } from "inspector";
 
 
 interface CategoryResponse {
@@ -42,79 +44,82 @@ export default function Home(props: CategoriasContextData) {
     return (
         <div>
             <div className={styles.root}>
-                <CssBaseline />
-                <AppBar
-                    position="fixed"
-                    className={styles.appBarShift}
-                >
-                    <Toolbar>
-                        <IconButton
-                            color="inherit"
-                            aria-label="open drawer"
-                            onClick={handleDrawerOpen}
-                            edge="start"
-                            className={styles.menuButton}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                        <Typography variant="h6" noWrap>
-                            Programa de Gerenciamento de Contas
+                <div>
+                    <CssBaseline />
+                    <AppBar
+                        position="fixed"
+                        className={styles.appBarShift}
+                    >
+                        <Toolbar>
+                            <IconButton
+                                color="inherit"
+                                aria-label="open drawer"
+                                onClick={handleDrawerOpen}
+                                edge="start"
+                                className={styles.menuButton}
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                            <Typography variant="h6" noWrap>
+                                Programa de Gerenciamento de Contas
                         </Typography>
-                    </Toolbar>
-                </AppBar>
-                <Drawer
-                    variant="persistent"
-                    anchor="left"
-                    open={open}
-                >
-                    <Grid
-                        container
-                        direction="row"
-                        justify="flex-end"
-                        alignItems="center">
-                        <IconButton onClick={handleDrawerClose} >
-                            {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
-                        </IconButton>
-                    </Grid>
-                    <Divider />
-                    <List>
-                        <ListItem button key="bill" onClick={() => redirectPage("conta")}>
-                            <Grid container >
-                                <Grid >
-                                    <ListItemIcon ><Description></Description> </ListItemIcon>
+                        </Toolbar>
+                    </AppBar>
+                    <Drawer
+                        variant="persistent"
+                        anchor="left"
+                        open={open}
+                    >
+                        <Grid
+                            container
+                            direction="row"
+                            justify="flex-end"
+                            alignItems="center">
+                            <IconButton onClick={handleDrawerClose} >
+                                {open ? <ChevronLeftIcon /> : <ChevronRightIcon />}
+                            </IconButton>
+                        </Grid>
+                        <Divider />
+                        <List>
+                            <ListItem button key="bill" onClick={() => redirectPage("conta")}>
+                                <Grid container >
+                                    <Grid >
+                                        <ListItemIcon ><Description></Description> </ListItemIcon>
+                                    </Grid>
+                                    <Grid >
+                                        <ListItemText primary="Conta" />
+                                    </Grid>
                                 </Grid>
-                                <Grid >
-                                    <ListItemText primary="Conta" />
+                            </ListItem>
+                            <ListItem button key="category" onClick={() => redirectPage("categoria")} >
+                                <Grid container >
+                                    <Grid >
+                                        <ListItemIcon ><AllInbox></AllInbox> </ListItemIcon>
+                                    </Grid>
+                                    <Grid >
+                                        <ListItemText primary="categoria" />
+                                    </Grid>
                                 </Grid>
-                            </Grid>
-                        </ListItem>
-                        <ListItem button key="category" onClick={() => redirectPage("categoria")} >
-                            <Grid container >
-                                <Grid >
-                                    <ListItemIcon ><AllInbox></AllInbox> </ListItemIcon>
+                            </ListItem>
+                            <ListItem button key="metodoPagamento" onClick={() => redirectPage("metodoPagamento")}>
+                                <Grid container >
+                                    <Grid >
+                                        <ListItemIcon ><AccountBalance></AccountBalance> </ListItemIcon>
+                                    </Grid>
+                                    <Grid >
+                                        <ListItemText primary="metodoPagamento" />
+                                    </Grid>
                                 </Grid>
-                                <Grid >
-                                    <ListItemText primary="categoria" />
-                                </Grid>
-                            </Grid>
-                        </ListItem>
-                        <ListItem button key="metodoPagamento" onClick={() => redirectPage("metodoPagamento")}>
-                            <Grid container >
-                                <Grid >
-                                    <ListItemIcon ><AccountBalance></AccountBalance> </ListItemIcon>
-                                </Grid>
-                                <Grid >
-                                    <ListItemText primary="metodoPagamento" />
-                                </Grid>
-                            </Grid>
-                        </ListItem>
+                            </ListItem>
 
-                    </List>
-                </Drawer>
-                <main>
-                    <CategoriaProvider categorias={props.categorias}>
+                        </List>
+                    </Drawer>
+                </div>
+                <main className={styles.content}>
+                    {/* <CategoriaProvider categorias={props.categorias}>
                         <CreateBill />
-                    </CategoriaProvider>
+                    </CategoriaProvider> */}
+                    <HomeBill />
                 </main>
             </div>
 
