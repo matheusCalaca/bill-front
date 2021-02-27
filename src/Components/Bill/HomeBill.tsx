@@ -210,7 +210,7 @@ export function HomeBill() {
 
 
     return (
-        <div>
+        <div className={styles.content}>
             <Grid container
                 direction="row"
                 justify="center"
@@ -224,7 +224,7 @@ export function HomeBill() {
                         </Typography>
                     </Grid>
 
-                    <div className={styles.content}>
+                    <div className={styles.selectMonth}>
                         <Grid >
                             <Select
                                 native
@@ -251,64 +251,65 @@ export function HomeBill() {
                 </Grid>
 
                 <Grid item justify="center" xs={12}>
-
-                    <List component="nav" aria-label="main mailbox folders">
-                        <InfiniteScroll
-                            dataLength={bills.length}
-                            next={getListBillsNext}
-                            hasMore={true}
-                            loader={<React.Fragment>
-                                <Grid
-                                    container
-                                    direction="column"
-                                    justify="center"
-                                    alignItems="center"
-                                >
-                                    <h4>{footerLoad(bills.length, rowsCount?.size)}</h4>
-                                </Grid>
-                            </React.Fragment>}
-                        >
-                            {bills.map(bill => (
-
-
-                                <ListItem>
-                                    <Grid>
-                                        <Card variant="outlined"
-                                            className={styles.muiGridRoot}
-                                            style={{ backgroundColor: colorList(bill.status), width: '100%' }}
-                                            key={bill.id}>
-                                            <CardContent onClick={() => handleClickOpen(bill.id, bill.status)}>
-                                                <Typography color="textPrimary" variant="h2">
-                                                    {bill.description}
-                                                </Typography>
-                                                <br />
-                                                <Typography variant="h5">
-                                                    {" R$" + bill.price}
-
-                                                    {"ID: " + bill.id + " Status: " + bill.status}
-
-                                                    {"Data de Vencimento: " + bill.maturityDate}
-                                                </Typography>
-
-                                            </CardContent>
-                                            <CardActions>
-                                                <IconButton aria-label="delete" onClick={() => deleteBill(bill.id)} disabled={bill.status == 'PAYMENT'}>
-                                                    <DeleteIcon />
-                                                </IconButton>
-
-                                            </CardActions>
-                                        </Card>
+                    <div className={styles.contentList}>
+                        <List component="nav" aria-label="main mailbox folders">
+                            <InfiniteScroll
+                                dataLength={bills.length}
+                                next={getListBillsNext}
+                                hasMore={true}
+                                loader={<React.Fragment>
+                                    <Grid
+                                        container
+                                        direction="column"
+                                        justify="center"
+                                        alignItems="center"
+                                    >
+                                        <h4>{footerLoad(bills.length, rowsCount?.size)}</h4>
                                     </Grid>
-                                </ListItem>
-                            ))}
-                        </InfiniteScroll>
+                                </React.Fragment>}
+                            >
+                                {bills.map(bill => (
 
-                    </List>
+
+                                    <ListItem>
+                                        <Grid>
+                                            <Card variant="outlined"
+                                                className={styles.muiGridRoot}
+                                                style={{ backgroundColor: colorList(bill.status), width: '100%' }}
+                                                key={bill.id}>
+                                                <CardContent onClick={() => handleClickOpen(bill.id, bill.status)}>
+                                                    <Typography color="textPrimary" variant="h2">
+                                                        {bill.description}
+                                                    </Typography>
+                                                    <br />
+                                                    <Typography variant="h5">
+                                                        {" R$" + bill.price}
+
+                                                        {"ID: " + bill.id + " Status: " + bill.status}
+
+                                                        {"Data de Vencimento: " + bill.maturityDate}
+                                                    </Typography>
+
+                                                </CardContent>
+                                                <CardActions>
+                                                    <IconButton aria-label="delete" onClick={() => deleteBill(bill.id)} disabled={bill.status == 'PAYMENT'}>
+                                                        <DeleteIcon />
+                                                    </IconButton>
+
+                                                </CardActions>
+                                            </Card>
+                                        </Grid>
+                                    </ListItem>
+                                ))}
+                            </InfiniteScroll>
+
+                        </List>
+                    </div>
                 </Grid>
             </Grid >
             {/* <PaymentDialog selectedId={billID} open={open} onClose={handleClose} /> */}
             <div className={styles.fab}>
-                <Fab color="primary"  aria-label="add" onClick={() => redirectPage("criarBill")} >
+                <Fab color="primary" aria-label="add" onClick={() => redirectPage("criarBill")} >
                     <AddIcon />
                 </Fab>
             </div>

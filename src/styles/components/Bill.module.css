@@ -16,11 +16,21 @@
 }
 
 .content {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.contentList {
+  display: flex;
+  justify-content: center;
+}
+
+.selectMonth {
   margin-right: 1rem;
   display: flex;
   justify-content: flex-end;
 }
 
-.content > div {
+.selectMonth > div {
   margin-right:0.5rem;
 }
