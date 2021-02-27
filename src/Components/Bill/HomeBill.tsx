@@ -53,8 +53,6 @@ export function HomeBill() {
     const [month, setMonth] = useState<number>(new Date().getMonth());
 
     useEffect(() => {
-        // getConfsTable()
-        getListCategoras()
         listYear()
     }, []);
 
@@ -73,12 +71,6 @@ export function HomeBill() {
         getListBills(false)
     }, [rowsCount]);
 
-
-    function getListCategoras() {
-        api.get('/category/all').then(response => {
-            setCategorias(response.data);
-        })
-    }
 
 
     async function getListBills(acresentar: boolean) {

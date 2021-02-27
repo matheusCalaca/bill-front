@@ -4,16 +4,17 @@ import { CategoriaContext } from '../../contexts/CategoriContext'
 import { AddIcon } from '@material-ui/data-grid';
 import api from '../../pages/api/api'
 import styles from '../../styles/components/Bill.module.css';
+import { PaymentMethodContext } from "../../contexts/PaymentMethodContext";
 
 
 
-export function HomeCategory() {
+export function HomePaymentMethod() {
 
-    const { categorias, reloadCategorias } = useContext(CategoriaContext);
+    const { paymentMethods, reloadPaymentMethod } = useContext(PaymentMethodContext);
 
     async function handleDelet(id: number) {
-        await api.delete(`/category/${id}`)
-        reloadCategorias
+        await api.delete(`/paymentMethod/${id}`);
+        reloadPaymentMethod;
     }
 
     const redirectPage = (page: string) => {
@@ -23,26 +24,27 @@ export function HomeCategory() {
 
 
 
+
     return (
         <div className={styles.content}>
-            <Grid>
-                <Grid >
+            <Grid  >
+                <Grid item xs={12}>
                     <Typography align="center" variant="h3">
-                        Cateogry
-                        </Typography>
+                        Metodo de Pagamento
+                    </Typography>
                 </Grid>
-                <Grid >
-                    {categorias.map(categoria => (
-                        <Grid item key={categoria.id} >
-                            <Paper key={categoria.id} >
+                <Grid>
+                    {paymentMethods.map(paymentMethod => (
+                        <Grid item key={paymentMethod.id} >
+                            <Paper key={paymentMethod.id} >
                                 <Grid  >
                                     <Grid >
                                         <Typography align="center" variant="h5" style={{ padding: 5 }}>
-                                            {categoria.name}
+                                            {paymentMethod.institutionName} ({paymentMethod.paymentMethod})
                                         </Typography>
                                     </Grid>
                                     <Grid style={{ padding: 5 }}>
-                                        <Button onClick={(e) => handleDelet(categoria.id)}>X</Button>
+                                        <Button onClick={(e) => handleDelet(paymentMethod.id)}>X</Button>
                                     </Grid>
                                 </Grid>
                             </Paper>
@@ -52,7 +54,7 @@ export function HomeCategory() {
                 </Grid>
             </Grid>
             <div className={styles.fab}>
-                <Fab color="primary" aria-label="add" onClick={() => redirectPage("criarCategoria")} >
+                <Fab color="primary" aria-label="add" onClick={() => redirectPage("criarMetodoPagamento")} >
                     <AddIcon />
                 </Fab>
             </div>

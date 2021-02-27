@@ -33,14 +33,15 @@ export function CategoriaProvider({
         })
     }
 
-    useEffect(() => {
-        reloadCategorias();
-      }, [categorias]);
+    // useEffect(() => {
+    //     reloadCategorias();
+    //   }, [categorias]);
 
     return (
         <CategoriaContext.Provider
             value={{
                 categorias,
+                reloadCategorias
             }}
         >
             {children}

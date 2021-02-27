@@ -12,6 +12,9 @@ import { CategoriaProvider } from '../contexts/CategoriContext'
 import api from './api/api'
 import { HomeCategory } from "../Components/category/HomeCategory";
 import { CreateCategory } from "../Components/category/CreateCategory";
+import { PaymentMethodProvider } from "../contexts/PaymentMethodContext";
+import { HomePaymentMethod } from "../Components/metodoDePagamento/HomePaymentMethod";
+import { CreatePaymentMethod } from "../Components/metodoDePagamento/CreatePaymentMethod";
 
 
 interface CategoryResponse {
@@ -20,9 +23,17 @@ interface CategoryResponse {
 }
 
 
+interface PaymentMethodResponse {
+    id: number;
+    institutionName: string;
+    paymentMethod: string;
+}
+
 interface CategoriasContextData {
     categorias: CategoryResponse[];
+    paymentMethods: PaymentMethodResponse[];
 }
+
 
 
 export default function Home(props: CategoriasContextData) {
@@ -122,6 +133,10 @@ export default function Home(props: CategoriasContextData) {
                         <HomeCategory />
                         <CreateCategory />
                     </CategoriaProvider>
+                    <PaymentMethodProvider paymentMethods={props.paymentMethods}>
+                        <HomePaymentMethod />
+                        <CreatePaymentMethod />
+                    </PaymentMethodProvider>
                     {/* <HomeBill /> */}
                 </main>
             </div>
@@ -132,13 +147,21 @@ export default function Home(props: CategoriasContextData) {
 
 export const getServerSideProps: GetServerSideProps = async () => {
     let categorias: CategoryResponse[] = []
+    let paymentMethods: PaymentMethodResponse[] = []
+
+    await api.get('/paymentMethod/all').then(res => {
+        paymentMethods = res.data;
+    })
+
     await api.get('/category/all').then(response => {
         categorias = response.data;
-    })
+    });
+
 
     return {
         props: {
             categorias: categorias,
+            paymentMethods: paymentMethods,
         },
     };
 };
