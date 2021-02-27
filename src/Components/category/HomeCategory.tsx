@@ -1,25 +1,11 @@
 import { Grid, Typography, TextField, Select, Button, Snackbar, List, CardContent, ListItem, Card, Fab, CardActions, IconButton, Paper } from "@material-ui/core"
 import React, { ChangeEvent, useContext, useEffect, useState } from 'react';
 import { CategoriaContext } from '../../contexts/CategoriContext'
-import DeleteIcon from '@material-ui/icons/Delete';
-import InfiniteScroll from 'react-infinite-scroll-component';
 import { AddIcon } from '@material-ui/data-grid';
 import api from '../../pages/api/api'
 import styles from '../../styles/components/Bill.module.css';
 
 
-
-interface CategoryResponse {
-    id: number;
-    name: string;
-}
-
-
-
-interface CategoryResponse {
-    id: number;
-    name: string;
-}
 
 export function HomeCategory() {
 
