@@ -1,12 +1,28 @@
 import { useState } from "react";
 import { AppBar, CssBaseline, Divider, Drawer, Grid, IconButton, List, ListItem, ListItemIcon, ListItemText, Toolbar, Typography } from '@material-ui/core'
-import styles from '../styles/Global.module.css';
+import styles from '../styles/pages/Global.module.css';
 import { AccountBalance, AllInbox, Description } from "@material-ui/icons";
 import MenuIcon from '@material-ui/icons/Menu';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
+import { CreateBill } from "../Components/Bill/create/CreateBill";
+import { GetServerSideProps } from "next";
+import { CategoriaProvider }  from '../contexts/CategoriContext'
+import api from './api/api'
 
-export default function Home() {
+
+interface CategoryResponse {
+    id: number;
+    name: string;
+}
+
+
+interface CategoriasContextData {
+    categorias: CategoryResponse[];
+}
+
+
+export default function Home(props: CategoriasContextData) {
     const [open, setOpen] = useState(false);
 
     const handleDrawerOpen = () => {
@@ -95,13 +111,26 @@ export default function Home() {
 
                     </List>
                 </Drawer>
-                <main
-
-                >
-                    <div />
+                <main>
+                    <CategoriaProvider categorias={props.categorias}>
+                        <CreateBill />
+                    </CategoriaProvider>
                 </main>
             </div>
 
         </div>
     )
 }
+
+export const getServerSideProps: GetServerSideProps = async () => {
+    let categorias: CategoryResponse[] = []
+    await api.get('/category/all').then(response => {
+        categorias = response.data;
+    })
+
+    return {
+        props: {
+            categorias: categorias,
+        },
+    };
+};
