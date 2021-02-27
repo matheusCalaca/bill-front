@@ -1,4 +1,4 @@
-import { createContext, useState, ReactNode } from 'react';
+import { createContext, useState, ReactNode, useEffect } from 'react';
 import api from '../pages/api/api'
 
 
@@ -33,6 +33,9 @@ export function CategoriaProvider({
         })
     }
 
+    useEffect(() => {
+        reloadCategorias();
+      }, [categorias]);
 
     return (
         <CategoriaContext.Provider

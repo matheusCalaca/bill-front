@@ -13,7 +13,7 @@ export function HomeCategory() {
 
     async function handleDelet(id: number) {
         await api.delete(`/category/${id}`)
-        reloadCategorias()
+        reloadCategorias
     }
 
     const redirectPage = (page: string) => {

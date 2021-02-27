@@ -11,6 +11,7 @@ import { GetServerSideProps } from "next";
 import { CategoriaProvider } from '../contexts/CategoriContext'
 import api from './api/api'
 import { HomeCategory } from "../Components/category/HomeCategory";
+import { CreateCategory } from "../Components/category/CreateCategory";
 
 
 interface CategoryResponse {
@@ -119,6 +120,7 @@ export default function Home(props: CategoriasContextData) {
                     <CategoriaProvider categorias={props.categorias}>
                         {/* <CreateBill /> */}
                         <HomeCategory />
+                        <CreateCategory />
                     </CategoriaProvider>
                     {/* <HomeBill /> */}
                 </main>
